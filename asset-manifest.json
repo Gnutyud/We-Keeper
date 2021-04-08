@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/We-Keeper/static/css/main.f21f0641.chunk.css",
+    "main.js": "/We-Keeper/static/js/main.c07eb9d7.chunk.js",
+    "main.js.map": "/We-Keeper/static/js/main.c07eb9d7.chunk.js.map",
+    "runtime-main.js": "/We-Keeper/static/js/runtime-main.95dc650c.js",
+    "runtime-main.js.map": "/We-Keeper/static/js/runtime-main.95dc650c.js.map",
+    "static/js/2.19cc13d2.chunk.js": "/We-Keeper/static/js/2.19cc13d2.chunk.js",
+    "static/js/2.19cc13d2.chunk.js.map": "/We-Keeper/static/js/2.19cc13d2.chunk.js.map",
+    "static/js/3.27d1bbab.chunk.js": "/We-Keeper/static/js/3.27d1bbab.chunk.js",
+    "static/js/3.27d1bbab.chunk.js.map": "/We-Keeper/static/js/3.27d1bbab.chunk.js.map",
+    "index.html": "/We-Keeper/index.html",
+    "static/css/main.f21f0641.chunk.css.map": "/We-Keeper/static/css/main.f21f0641.chunk.css.map",
+    "static/js/2.19cc13d2.chunk.js.LICENSE.txt": "/We-Keeper/static/js/2.19cc13d2.chunk.js.LICENSE.txt",
+    "static/media/logo.a5c0b391.jpg": "/We-Keeper/static/media/logo.a5c0b391.jpg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.95dc650c.js",
+    "static/js/2.19cc13d2.chunk.js",
+    "static/css/main.f21f0641.chunk.css",
+    "static/js/main.c07eb9d7.chunk.js"
+  ]
+}
