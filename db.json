@@ -1,29 +1,24 @@
 {
   "ourNotes": [
     {
-      "title": "Hello",
-      "text": "cc",
-      "id": 6
+      "title": "What's up",
+      "text": "Add new json server",
+      "id": 1
     },
     {
-      "title": "Test",
-      "text": "123",
-      "id": 7
+      "title": "Can I Use json server in gh-pages in github",
+      "text": "I don't think that can work",
+      "id": 2
     },
     {
-      "title": "SN DUng",
-      "text": "08/04/2021",
-      "id": 8
+      "title": "use PATCH method",
+      "text": "test here\nOk test luon",
+      "id": 3
     },
     {
-      "title": "new one",
-      "text": "hope",
-      "id": 10
-    },
-    {
-      "title": "ID",
-      "text": "6 7 8 10",
-      "id": 11
+      "title": "I Love U",
+      "text": "Do you still love me?\nYes, I do but not too much as before",
+      "id": 4
     }
   ]
 }
