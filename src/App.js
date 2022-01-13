@@ -1,6 +1,7 @@
 import Add from "./components/Add";
 import Header from "./components/Header";
 import Notes from "./components/Notes";
+import appApi from "./services/appApi";
 import React, { useState, useEffect } from "react";
 
 function App() {
@@ -9,7 +10,9 @@ function App() {
   // Call api
   useEffect(() => {
     const getNotes = async () => {
-      const noteFromServer = await fetchNotes();
+      // const noteFromServer = await fetchNotes();
+      const noteFromServer = await appApi.getNotes();
+      console.log(noteFromServer)
       const rewriteData = [];
       for (const key in noteFromServer) {
         if (noteFromServer[key])
@@ -24,37 +27,16 @@ function App() {
     };
     getNotes();
   }, [fetchData]);
-  // fetch Notes data from server
-  const fetchNotes = async () => {
-    const res = await fetch(
-      "https://wekeep-app-39b7e-default-rtdb.asia-southeast1.firebasedatabase.app/notes.json",
-    );
-    const data = await res.json();
-    return data;
-  };
+
   // Delete func
   const delNote = async (id) => {
-    await fetch(
-      `https://wekeep-app-39b7e-default-rtdb.asia-southeast1.firebasedatabase.app/notes/${id}.json`,
-      {
-        method: "DELETE",
-      },
-    );
+    await appApi.deleteNote(id);
     setNoteData(noteData.filter((note) => note.id !== id));
   };
   // Save notes value from input
   const saveNote = async (note) => {
     try {
-      await fetch(
-        "https://wekeep-app-39b7e-default-rtdb.asia-southeast1.firebasedatabase.app/notes.json",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(note),
-        },
-      );
+      await appApi.saveNote(note);
       setFetchData((prev) => !prev);
     } catch (err) {
       console.error(err);
@@ -62,21 +44,12 @@ function App() {
   };
   // Edit func
   const editNote = async (updateNote) => {
-    const res = await fetch(
-      `https://wekeep-app-39b7e-default-rtdb.asia-southeast1.firebasedatabase.app/notes/${updateNote.id}.json`,
-      {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          title: updateNote.title,
-          text: updateNote.text,
-          color: updateNote.color,
-        }),
-      },
-    );
-    const data = await res.json();
+    const body = {
+      title: updateNote.title,
+      text: updateNote.text,
+      color: updateNote.color,
+    }
+    const data = await appApi.updateNote(updateNote.id, body);
     setNoteData(
       noteData.map((note) => (note.id === updateNote.id ? data : note)),
     );
