@@ -1,6 +1,6 @@
-import Add from "./components/Add";
+import AddNote from "./components/AddNote";
 import Header from "./components/Header";
-import Notes from "./components/Notes";
+import NoteList from "./components/NoteList";
 import appApi from "./services/appApi";
 import React, { useState, useEffect } from "react";
 
@@ -10,9 +10,8 @@ function App() {
   // Call api
   useEffect(() => {
     const getNotes = async () => {
-      // const noteFromServer = await fetchNotes();
       const noteFromServer = await appApi.getNotes();
-      console.log(noteFromServer)
+      console.log('notes', noteFromServer)
       const rewriteData = [];
       for (const key in noteFromServer) {
         if (noteFromServer[key])
@@ -21,6 +20,8 @@ function App() {
             title: noteFromServer[key].title,
             text: noteFromServer[key].text,
             color: noteFromServer[key].color,
+            createdAt: noteFromServer[key].createdAt || "",
+            updatedAt: noteFromServer[key].updatedAt || "",
           });
       }
       setNoteData(rewriteData);
@@ -35,6 +36,9 @@ function App() {
   };
   // Save notes value from input
   const saveNote = async (note) => {
+    const d = new Date();
+    const createdAt = d.toISOString();
+    note.createdAt = createdAt;
     try {
       await appApi.saveNote(note);
       setFetchData((prev) => !prev);
@@ -44,18 +48,20 @@ function App() {
   };
   // Edit func
   const editNote = async (updateNote) => {
+    const d = new Date();
+    const updatedAt = d.toISOString();
     const body = {
+      id: updateNote.id,
       title: updateNote.title,
       text: updateNote.text,
       color: updateNote.color,
+      createdAt: updateNote.createdAt,
+      updatedAt: updatedAt,
     }
     const data = await appApi.updateNote(updateNote.id, body);
-    setNoteData(
-      noteData.map((note) => (note.id === updateNote.id ? data : note)),
-    );
-    setFetchData((prev) => !prev);
+    const updatedData = noteData.map((note) => (note.id === updateNote.id ? data : note));
+    setNoteData(updatedData);
   };
-  console.log(noteData);
   // Set value to expansion Add note form
   const [show, setShow] = useState(false);
   const [isSearch, setIsSearch] = useState(false);
@@ -96,7 +102,7 @@ function App() {
         setSearchText={setSearchText}
       />
       {!isSearch && (
-        <Add
+        <AddNote
           display={show}
           openAdd={() => setShow(true)}
           closeAdd={() => setShow(false)}
@@ -106,7 +112,7 @@ function App() {
           textareaLine={textareaLine}
         />
       )}
-      <Notes
+      <NoteList
         notes={noteData}
         onDelete={delNote}
         editNote={editNote}

@@ -1,4 +1,4 @@
-import logo from './logo.jpg';
+import logo from '../../assets/images/logo.jpg';
 import PropTypes from 'prop-types';
 import Search from './Search';
 

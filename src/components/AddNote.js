@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import NoteForm from './NoteForm';
+import NoteBox from './NoteBox';
 
-const Add = ({
+const AddNote = ({
   openAdd,
   closeAdd,
   display,
@@ -14,7 +14,7 @@ const Add = ({
   const [text, setText] = useState('');
   const [color, setColor] = useState('');
   // when click Close button
-  const onSubmit = (e) => {
+  const onSubmitAdd = (e) => {
     e.preventDefault();
     setNumLine('1');
     if (!text && !title) {
@@ -29,13 +29,20 @@ const Add = ({
     setColor('#ffffff');
     closeAdd();
   };
+
+  const cancelAdd = () => {
+    setTitle('');
+    setText('');
+    setColor('#ffffff');
+    closeAdd();
+  }
   // take the text value to pass the set row number func for textarea input form
   textareaLine(text);
   return (
-    <NoteForm
+    <NoteBox
       openAdd={openAdd}
       display={display}
-      onSubmit={onSubmit}
+      onSubmit={onSubmitAdd}
       text={text}
       setText={setText}
       title={title}
@@ -43,10 +50,11 @@ const Add = ({
       color={color}
       setColor={setColor}
       cName={'add-content'}
-      submitName={'Close'}
+      submitName={'Add'}
       numLine={numLine}
+      onCancel={cancelAdd}
     />
   );
 };
 
-export default Add;
+export default AddNote;
