@@ -11,7 +11,7 @@ const appApi = {
     return axiosClient.post('/notes.json', data);
   },
   updateNote: (id, data) => {
-    return axiosClient.patch(`/${id}.json`, data)
+    return axiosClient.put(`/notes/${id}.json`, data);
   }
 }
 

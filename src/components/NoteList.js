@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import NoteForm from './NoteForm';
+import NoteBox from './NoteBox';
 import parse from 'html-react-parser';
 
-const Notes = ({
+const NoteList = ({
   notes,
   onDelete,
   editNote,
@@ -18,12 +18,18 @@ const Notes = ({
   const [text, setText] = useState('');
   const [title, setTitle] = useState('');
   const [color, setColor] = useState('');
-  const submitUpdate = () => {
-    editNote({ id, title, text, color });
+  const [createdAt, setCreatedAt] = useState('');
+  const [updatedAt, setUpdatedAt] = useState('');
+  const onSubmitUpdate = () => {
+    editNote({ id, title, text, color, createdAt });
     setId(null);
     setTitle('');
     setText('');
   };
+
+  const cancelEdit = () => {
+    setId(null);
+  }
 
   // when click on search input
   if (isSearch) {
@@ -43,7 +49,7 @@ const Notes = ({
             str,
             `<b>${searchText}</b>`,
           );
-          let highlightText = search.text.replace(str, `<b>${searchText}</b>`);
+          let highlightText = search.text.replace(str, `<mark>${searchText}</mark>`);
           return (
             <div
               key={search.id}
@@ -57,6 +63,8 @@ const Notes = ({
                   setTitle(search.title);
                   setText(search.text);
                   setColor(search.color);
+                  setCreatedAt(search.createdAt);
+                  setUpdatedAt(search.updatedAt);
                   searchClose();
                 }}></i>
               <i
@@ -79,9 +87,9 @@ const Notes = ({
     return (
       <div id='myModal' className='modal'>
         {
-          <NoteForm
+          <NoteBox
             display={true}
-            onSubmit={submitUpdate}
+            onSubmit={onSubmitUpdate}
             text={text}
             setText={setText}
             title={title}
@@ -91,6 +99,9 @@ const Notes = ({
             cName={'add-content edit-form'}
             submitName={'Update'}
             numLine={numLine}
+            createdAt={createdAt}
+            updatedAt={updatedAt}
+            onCancel={cancelEdit}
           />
         }
       </div>
@@ -112,6 +123,8 @@ const Notes = ({
               setTitle(note.title);
               setText(note.text);
               setColor(note.color);
+              setCreatedAt(note.createdAt);
+              setUpdatedAt(note.updatedAt);
             }}></i>
           <i
             className='fa fa-trash-o'
@@ -125,4 +138,4 @@ const Notes = ({
   );
 };
 
-export default Notes;
+export default NoteList;
