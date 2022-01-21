@@ -111,8 +111,6 @@ body {
   margin: auto;
   display: flex;
   flex-direction: column;
-  -webkit-transition: height 0.4s ease-in-out;
-  transition: height 0.4s ease-in-out;
 }
 
 .add-content input,
@@ -126,9 +124,19 @@ body {
 
 .add-content textarea {
   height: 100%;
-  overflow: hidden;
+  overflow: auto;
   font-family: inherit;
   resize: none;
+  /* -ms-overflow-style: none;
+  scrollbar-width: none; */
+}
+
+/* .add-content textarea::-webkit-scrollbar {
+  display: none;
+} */
+
+.add-content .addClick{
+  height: 45px;
 }
 
 /* Note component section */
@@ -164,8 +172,8 @@ body {
   height: 100%;
   border: 1px solid #e8dfec;
   border-radius: 10px;
-  padding: 0px 20px 10px;
-  transition: all 1s linear;
+  padding: 0px 20px 5px;
+  /* transition: background-color 1s linear; */
   word-wrap: break-word;
 }
 
@@ -181,13 +189,32 @@ body {
   font-size: 18px;
   text-transform: capitalize;
 }
-.note-box h3,
-.note-box p {
+
+.viewing{
+  width: 600px;
+  height: 80%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.viewing-bottom{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.viewing-content{
+  height: 75%;
+}
+
+.note-box .title-preview,
+.note-box .text-preview {
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.note-box h3 {
+.note-box .title-preview {
   font-weight: 500;
   font-size: 16px;
   display: -webkit-box;
@@ -195,12 +222,29 @@ body {
   -webkit-box-orient: vertical;
 }
 
-.note-box p {
+.note-box .text-preview {
   font-size: 14px;
+  margin-bottom: 25px;
   /* limit number of text line */
   display: -webkit-box;
   -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
+}
+
+.note-box .text-view {
+  width: 100%;
+  outline: none;
+  border: none;
+  height: 100%;
+  overflow: auto;
+  font-family: inherit;
+  resize: none;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.note-box .text-view::-webkit-scrollbar {
+  display: none;
 }
 
 .note-form-footer {
@@ -208,12 +252,13 @@ body {
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  margin: 5px 0px;
 }
 
 .fa-pencil {
   position: absolute;
-  top: 5px;
-  right: 5px;
+  top: 10px;
+  right: 10px;
   cursor: pointer;
   opacity: 0.7;
   display: none;
@@ -222,8 +267,8 @@ body {
 
 .fa-trash-o {
   position: absolute;
-  bottom: 5px;
-  right: 5px;
+  bottom: 10px;
+  right: 10px;
   cursor: pointer;
   opacity: 0.7;
   display: none;
@@ -251,7 +296,7 @@ body {
 
 .btn-close {
   width: 70px;
-  height: 40px;
+  height: 30px;
   align-self: flex-end;
   margin-bottom: 1px;
   font-size: inherit;
@@ -259,7 +304,7 @@ body {
   cursor: pointer;
   display: flex;
   justify-content: center;
-  line-height: 40px;
+  line-height: 30px;
   outline: none;
   border: none;
   background-color: #ffffff;

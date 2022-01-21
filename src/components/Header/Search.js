@@ -1,27 +1,42 @@
 import PropTypes from 'prop-types';
+import { useContext } from 'react';
+import AppContext from '../../store/context';
 
-const Search = ({
-  onClick,
-  text,
-  cname,
-  search,
-  setSearch,
-  isSearch,
-  searchClose,
-}) => {
+const Search = ({ text, cname }) => {
+  const { noteData, turnOnSearchingMode, turnOffSearchingMode, setSearchResult, isSearching, searchInput, setSearchInput } = useContext(AppContext);
+
+  const searchHandle = () => {
+    turnOnSearchingMode();
+    // get matches to current text input search
+    let matches = noteData.filter((note) => {
+      const regex = new RegExp(`${searchInput}`, "gmi");
+      return note.title.match(regex) || note.text.match(regex);
+    });
+    if (searchInput.length === 0) {
+      matches = noteData;
+    }
+    setSearchResult(matches);
+  };
+
+  const onCloseSearchTab = () => {
+    setSearchInput("");
+    turnOffSearchingMode();
+  };
+
   return (
     <div className='header-search'>
       <i className='fa fa-search'></i>
       <input
-        onChange={(e) => setSearch(e.target.value)}
-        value={search}
+        onChange={(e) => setSearchInput(e.target.value)}
+        onClick={searchHandle}
+        value={searchInput}
         type='text'
         placeholder={text}
         className={cname}
-        onKeyUp={onClick}
+        onKeyUp={searchHandle}
       />
-      {isSearch && (
-        <i class='fa fa-times' aria-hidden='true' onClick={searchClose}></i>
+      {isSearching && (
+        <i className='fa fa-times' aria-hidden='true' onClick={onCloseSearchTab}></i>
       )}
     </div>
   );

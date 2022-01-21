@@ -1,18 +1,21 @@
 import logo from '../../assets/images/logo.jpg';
 import PropTypes from 'prop-types';
 import Search from './Search';
+// import { useState } from 'react';
 
 const Header = ({
   title,
   onClick,
-  isSearch,
-  searchClose,
-  searchText,
-  setSearchText,
+  // isSearch,
+  // searchClose,
+  // searchText,
+  // setSearchText,
 }) => {
-  const onChange = () => {
-    onClick(searchText);
-  };
+  // const [searchText, setSearchText] = useState("");
+  
+  // const onChange = () => {
+  //   onClick(searchText);
+  // };
 
   return (
     <div className='header-nav'>
@@ -21,13 +24,13 @@ const Header = ({
         <p>{title}</p>
       </div>
       <Search
-        onClick={onChange}
+        // onClick={onChange}
         text='search what you want...'
         cname='btn btn-color search'
-        search={searchText}
-        setSearch={setSearchText}
-        isSearch={isSearch}
-        searchClose={searchClose}
+        // search={searchText}
+        // setSearch={setSearchText}
+        // isSearch={isSearch}
+        // searchClose={searchClose}
       />
     </div>
   );
