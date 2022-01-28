@@ -3,7 +3,7 @@ import React from "react";
 
 const NoteItem = (props) => {
   return <div
-      className={props.isViewing ? "note-box edit-form viewing" : "note-box"}
+      className={props.isViewing ? "note-box edit-form viewing" : "note-box note-box-item"}
       style={{ backgroundColor: props.color }}
       onClick={!props.isViewing ? props.onClick : undefined}
     >

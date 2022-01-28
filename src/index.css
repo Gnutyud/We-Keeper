@@ -176,6 +176,10 @@ body {
   word-wrap: break-word;
 }
 
+.note-box-item {
+  border-radius: 5px !important;
+}
+
 .note-box:hover {
   border: 1px solid #252525;
 }
@@ -317,7 +321,7 @@ body {
 /* Edit note component modal */
 
 .edit-form {
-  width: 100%;
+  width: 100% !important;
   height: 100%;
 }
 
@@ -404,25 +408,28 @@ body {
     height: 40px;
     position: relative;
   }
-  .add-content {
-    width: 100%;
+
+  .add-content, .note-box {
+    width: 320px;
   }
-  .note-box, .add-content{
+
+  .note-box, .edit-form {
     border-radius: 0px;
   }
 }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 650px) {
   .note-content {
     grid-template-columns: auto;
   }
   .header-search {
-    width: 250px;
+    width: 200px;
     height: 40px;
     position: relative;
   }
-  .add-content {
-    width: 100%;
+
+  .add-content, .note-box {
+    width: 350px;
   }
 }
 
@@ -430,8 +437,9 @@ body {
   .header-search {
     width: 300px;
   }
-  .add-content {
-    width: 100%;
+
+  .add-content, .note-box {
+    width: 300px;
   }
   .header-nav {
     display: flex;
