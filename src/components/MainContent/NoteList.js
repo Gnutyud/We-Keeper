@@ -4,6 +4,7 @@ import appApi from '../../services/appApi';
 import AppContext from '../../store/context';
 import NoteBox from './NoteBox';
 import NoteItem from './NoteItem';
+import Modal from '../UI/Modal';
 
 const NoteList = () => {
   // Update or Edit notes
@@ -35,6 +36,7 @@ const NoteList = () => {
     setId(null);
     setTitle('');
     setText('');
+    turnOffViewingMode();
   };
 
   const onCloseSearchTab = () => {
@@ -95,9 +97,8 @@ const NoteList = () => {
   if (id) {
     //  take the text value to pass the set row number func for textarea input form
     return (
-      <div id='myModal' className='modal'>
-        {
-          <NoteBox
+      <Modal onClick={cancelEdit}>
+        <NoteBox
             display={true}
             onSubmit={onSubmitUpdate}
             text={text}
@@ -112,16 +113,14 @@ const NoteList = () => {
             updatedAt={updatedAt}
             onCancel={cancelEdit}
           />
-        }
-      </div>
+      </Modal>
     );
   }
   // When click on the note item then open view mode
   if (isViewing && viewingNote) {
     return (
-      <div id='myModal' className='modal'>
-        {
-          <NoteItem
+      <Modal onClick={()=>turnOffViewingMode()}>
+      <NoteItem
             color={viewingNote.color}
             key={viewingNote.id}
             text={viewingNote.text}
@@ -133,8 +132,7 @@ const NoteList = () => {
             handleClick={() => handleClick(viewingNote)}
             removeNoteItem={() => removeNoteItem(viewingNote.id)}
           />
-        }
-      </div>
+    </Modal>
     );
   }
   // Render note items
