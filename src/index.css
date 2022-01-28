@@ -399,7 +399,7 @@ body {
   }
 }
 
-@media only screen and (max-width: 800px) {
+@media only screen and (max-width: 768px) {
   .note-content {
     grid-template-columns: auto auto;
   }
@@ -408,6 +408,7 @@ body {
     height: 40px;
     position: relative;
   }
+
   .add-content, .note-box {
     width: 320px;
   }
@@ -426,6 +427,7 @@ body {
     height: 40px;
     position: relative;
   }
+
   .add-content, .note-box {
     width: 350px;
   }
@@ -435,6 +437,7 @@ body {
   .header-search {
     width: 300px;
   }
+
   .add-content, .note-box {
     width: 300px;
   }
