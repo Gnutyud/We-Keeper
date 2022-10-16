@@ -1,5 +1,5 @@
 import React from "react";
-import classes from "./Modal.module.css";
+import classes from "./Modal.module.scss";
 import ReactDOM from "react-dom";
 import reactDom from "react-dom";
 const BackDrop = (props) => {
