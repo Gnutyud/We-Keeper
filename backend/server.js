@@ -14,6 +14,7 @@ const PORT = process.env.PORT || 4000;
 // routes
 const rootRoutes = require('./routes/root');
 const userRoutes = require('./routes/userRoutes');
+const authRoutes = require('./routes/authRoutes');
 
 connectDb();
 
@@ -28,8 +29,8 @@ app.use(cookieParser());
 app.use('/', express.static(path.join(__dirname, 'public')));
 
 app.use('/', rootRoutes);
-
 app.use('/users', userRoutes);
+app.use('/auth', authRoutes);
 
 app.use(errorHandle);
 
