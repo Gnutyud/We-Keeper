@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-module.exports.createToken = async (user) => {
+const createToken = async (user) => {
   return new Promise((resolve, reject) => {
     jwt.sign({
       "UserInfo": {
@@ -8,28 +8,28 @@ module.exports.createToken = async (user) => {
         "roles": user.roles
       }
     },
-    process.env.JWT_SECRET_TOKEN,
-    { expiresIn: "10s" }, (err, token) => {
-      if (err) return reject(err);
-      return resolve(token)
-    })
+      process.env.JWT_SECRET_TOKEN,
+      { expiresIn: "10s" }, (err, token) => {
+        if (err) return reject(err);
+        return resolve(token)
+      })
   })
 }
 
-module.exports.createRefreshToken = async (user) => {
+const createRefreshToken = async (user) => {
   return new Promise((resolve, reject) => {
     jwt.sign({
       "username": user.username
     },
-    process.env.JWT_SECRET_REFRESH_TOKEN,
-    { expiresIn: "1d" }, (err, token) => {
-      if (err) return reject(err);
-      return resolve(token)
-    })
+      process.env.JWT_SECRET_REFRESH_TOKEN,
+      { expiresIn: "1d" }, (err, token) => {
+        if (err) return reject(err);
+        return resolve(token)
+      })
   })
 }
 
-module.exports.verifyJwtToken = (token, secretKey) => {
+const verifyJwtToken = (token, secretKey) => {
   return new Promise((resolve, reject) => {
     jwt.verify(token, secretKey, (err, decoded) => {
       if (err) {
@@ -40,10 +40,10 @@ module.exports.verifyJwtToken = (token, secretKey) => {
   });
 };
 
-module.exports.sendRefreshToken = (res, user) => {
+const sendRefreshToken = (res, refreshToken) => {
   res.cookie(
     process.env.REFRESH_TOKEN_COOKIE_NAME,
-    createRefreshToken(user),
+    refreshToken,
     {
       httpOnly: true, // accessible only by web server
       secure: true, // https
@@ -53,3 +53,5 @@ module.exports.sendRefreshToken = (res, user) => {
     }
   )
 }
+
+module.exports = { createToken, createRefreshToken, verifyJwtToken, sendRefreshToken }

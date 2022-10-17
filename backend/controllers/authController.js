@@ -1,7 +1,6 @@
 const User = require('../models/User');
 const { matchPassword } = require('../helper/password');
 const { createToken, createRefreshToken, sendRefreshToken, verifyJwtToken } = require('../helper/jwt');
-const jwt = require('jsonwebtoken');
 const asyncHandler = require('express-async-handler');
 
 // @desc Login
@@ -26,7 +25,7 @@ const login = asyncHandler(async (req, res) => {
 
   const accessToken = await createToken(foundUser);
   const refreshToken = await createRefreshToken(foundUser);
-  sendRefreshToken(res, foundUser);
+  sendRefreshToken(res, refreshToken);
 
   res.json({ accessToken });
 });
