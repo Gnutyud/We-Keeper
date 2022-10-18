@@ -40,18 +40,4 @@ const verifyJwtToken = (token, secretKey) => {
   });
 };
 
-const sendRefreshToken = (res, refreshToken) => {
-  res.cookie(
-    process.env.REFRESH_TOKEN_COOKIE_NAME,
-    refreshToken,
-    {
-      httpOnly: true, // accessible only by web server
-      secure: true, // https
-      sameSite: 'None', // cross-site cookie
-      path: '/refreshToken',
-      maxAge: 7 * 24 * 60 * 60 * 1000 // cookie expiry
-    }
-  )
-}
-
-module.exports = { createToken, createRefreshToken, verifyJwtToken, sendRefreshToken }
+module.exports = { createToken, createRefreshToken, verifyJwtToken }

@@ -1,6 +1,6 @@
 const User = require('../models/User');
 const { matchPassword } = require('../helper/password');
-const { createToken, createRefreshToken, sendRefreshToken, verifyJwtToken } = require('../helper/jwt');
+const { createToken, createRefreshToken, verifyJwtToken } = require('../helper/jwt');
 const asyncHandler = require('express-async-handler');
 
 // @desc Login
@@ -25,7 +25,14 @@ const login = asyncHandler(async (req, res) => {
 
   const accessToken = await createToken(foundUser);
   const refreshToken = await createRefreshToken(foundUser);
-  sendRefreshToken(res, refreshToken);
+  // Create secure cookie with refresh token 
+  res.cookie('jwtcookie', refreshToken, {
+    httpOnly: true, //accessible only by web server 
+    secure: true, //https
+    sameSite: 'None', //cross-site cookie 
+    path: '/auth/refresh',
+    maxAge: 7 * 24 * 60 * 60 * 1000 //cookie expiry: set to match rT
+  })
 
   res.json({ accessToken });
 });
@@ -37,11 +44,11 @@ const refresh = async (req, res) => {
   const cookies = req.cookies;
   let cookieName = process.env.REFRESH_TOKEN_COOKIE_NAME;
 
-  if (!cookies?.cookieName) {
+  if (cookies && !cookies[cookieName]) {
     return res.status(401).json({ message: 'Unauthorized' })
   }
 
-  const refreshToken = cookies.cookieName;
+  const refreshToken = cookies[cookieName];
 
   const refreshTokenDecoded = await verifyJwtToken(refreshToken, process.env.JWT_SECRET_REFRESH_TOKEN);
 
@@ -53,9 +60,9 @@ const refresh = async (req, res) => {
 
   if (!foundUser) return res.status(401).json({ message: 'Unauthorized' });
 
-  const newAccessToken = createToken(foundUser);
+  const accessToken = await createToken(foundUser);
 
-  res.json({ newAccessToken });
+  res.json({ accessToken });
 };
 
 // @desc Logout
