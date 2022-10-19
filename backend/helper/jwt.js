@@ -9,7 +9,7 @@ const createToken = async (user) => {
       }
     },
       process.env.JWT_SECRET_TOKEN,
-      { expiresIn: "10s" }, (err, token) => {
+      { expiresIn: "20m" }, (err, token) => {
         if (err) return reject(err);
         return resolve(token)
       })

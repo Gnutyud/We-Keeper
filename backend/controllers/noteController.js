@@ -6,8 +6,11 @@ const asyncHandler = require('express-async-handler');
 // @route GET /notes
 // @access Private 
 const getAllNotes = asyncHandler(async (req, res) => {
+  const { userId } = req.body;
+
+  if(!userId) return res.status(400).json({ message: 'userId is required' })
   // Get all notes from moongose DB
-  const notes = await Note.find().lean();
+  const notes = await Note.find({ userId }).lean();
 
   if (!notes?.length) {
     return res.status(400).json({ message: 'No notes found!' });
