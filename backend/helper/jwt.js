@@ -19,7 +19,10 @@ const createToken = async (user) => {
 const createRefreshToken = async (user) => {
   return new Promise((resolve, reject) => {
     jwt.sign({
-      "username": user.username
+      "UserInfo": {
+        "username": user.username,
+        "roles": user.roles
+      }
     },
       process.env.JWT_SECRET_REFRESH_TOKEN,
       { expiresIn: "1d" }, (err, token) => {
@@ -29,7 +32,7 @@ const createRefreshToken = async (user) => {
   })
 }
 
-const verifyJwtToken = (token, secretKey) => {
+const verifyJwtToken = async (token, secretKey) => {
   return new Promise((resolve, reject) => {
     jwt.verify(token, secretKey, (err, decoded) => {
       if (err) {

@@ -1,6 +1,7 @@
 import { createContext } from "react";
 
 export const initialState = {
+  auth: {},
   noteData: [],
   isSearching: false,
   searchNoteResult: [],

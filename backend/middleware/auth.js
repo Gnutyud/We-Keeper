@@ -25,8 +25,8 @@ module.exports.authByToken = async (req, res, next) => {
     req.roles = accessTokenDecoded.UserInfo.roles;
     return next()
   } catch (e) {
-    return res.status(401).json({
-      errors: { body: ['Authorization failed', e.message] }
+    return res.status(403).json({
+      errors: { body: ['Forbidden', e.message] }
     })
   }
 

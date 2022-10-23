@@ -4,7 +4,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import Provider from './store/Provider';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import PrivateRoute from './components/helper/PrivateRoute';
 import Login from './components/Login';
 
@@ -13,8 +13,14 @@ ReactDOM.render(
     <Provider>
       <BrowserRouter>
         <Routes>
-          <Route path='/login' element={<Login/>}/>
-          <Route path='/' element={<PrivateRoute><App /></PrivateRoute>} />
+          <Route path='/login' element={<Login />} />
+          <Route path='/notes' element={<PrivateRoute />}>
+            <Route index element={<App />} />
+          </Route>
+          <Route
+            path="/"
+            element={<Navigate to="/notes" replace />}
+          />
           <Route path="*" element={<h1>Page not found!</h1>} />
         </Routes>
       </BrowserRouter>

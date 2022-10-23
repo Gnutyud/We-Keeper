@@ -1,6 +1,7 @@
 import appApi from "../services/appApi";
 
 export const actions = {
+  SET_AUTH: "SET_AUTH",
   ADD_NOTE_ITEM: "ADD_NOTE_ITEM",
   REMOVE_NOTE_ITEM: "REMOVE_NOTE_ITEM",
   TURN_ON_SEARCHING_MODE: "TURN_ON_SEARCHING_MODE",
@@ -14,6 +15,12 @@ export const actions = {
 
 const reducer = (state, action) => {
   switch (action.type) {
+    case actions.SET_AUTH: {
+      return {
+        ...state,
+        auth: action.authData
+      }
+    }
     case actions.ADD_NOTE_ITEM: {
       let updatedNotes = [...state.noteData];
       let existingNoteItemIndex = state.noteData.findIndex(note => note.id === action.noteItem.id);
