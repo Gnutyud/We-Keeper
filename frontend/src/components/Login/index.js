@@ -1,6 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Button from '../UI/Button';
 import style from './Login.module.scss';
+import appApi from '../../services/appApi';
+import {  useNavigate } from 'react-router-dom';
+import AppContext from '../../store/context';
 
 const Login = () => {
   // without lib like formik and yub
@@ -9,25 +12,24 @@ const Login = () => {
   const [formValues, setFormValues] = useState(initialValues);
   const [formErrors, setFormErrors] = useState(initialErrors);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const navigate =  useNavigate();
+  const { setAuth } = useContext(AppContext);
 
   const submitForm = async () => {
-    console.log('send request');
-    // try {
-    //   let res = await appApi.login(formValues);
-    //   setFormErrors({ ...formErrors, success: 'Signed in successfully' });
-    //   // store user info and go to the next page
-    //   localStorage.setItem('refreshToken', res.user.refreshToken);
-    //   JWTManager.setToken(res.user.token);
-    //   navigate('/');
-    // } catch (err: any) {
-    //   if (err.message) {
-    //     setFormErrors({ ...formErrors, error: err.message });
-    //   }
-    //   if (err.errors.message) {
-    //     console.log(err.errors.message);
-    //     setFormErrors({ ...formErrors, error: err.errors.message });
-    //   }
-    // }
+    try {
+      let res = await appApi.login({username: formValues.email, password: formValues.password});
+      setFormErrors({ ...formErrors, success: 'Signed in successfully' });
+      setAuth(res);
+      navigate('/');
+    } catch (err) {
+      if (err.response.data.message) {
+        setFormErrors({ ...formErrors, error: err.response.data.message });
+      }
+      if (err.errors.message) {
+        console.log(err.errors.message);
+        setFormErrors({ ...formErrors, error: err.errors.message });
+      }
+    }
   };
 
   const handleChange = (e) => {

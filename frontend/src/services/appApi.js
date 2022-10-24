@@ -1,7 +1,8 @@
 import axiosClient from "./axiosClient";
+import { axiosPrivate } from "./axiosClient";
 
 const appApi = {
-  getNotes : () => {
+  getNotes: () => {
     return axiosClient.get('/notes.json');
   },
   deleteNote: (id) => {
@@ -12,7 +13,11 @@ const appApi = {
   },
   updateNote: (id, data) => {
     return axiosClient.put(`/notes/${id}.json`, data);
-  }
+  },
+  login: (data) => {
+    return axiosPrivate.post('/auth', data)
+  },
+  getRefreshToken: () => axiosPrivate.get('/auth/refresh'),
 }
 
 export default appApi;

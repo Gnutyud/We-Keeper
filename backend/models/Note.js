@@ -15,9 +15,8 @@ const NoteSchema = new mongoose.Schema(
       type: String,
       required: true
     },
-    completed: {
-      type: Boolean,
-      default: false
+    color: {
+      type: String
     }
   },
   {

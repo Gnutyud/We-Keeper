@@ -14,13 +14,13 @@ const login = asyncHandler(async (req, res) => {
   const foundUser = await User.findOne({ username }).exec();
 
   if (!foundUser || !foundUser.active) {
-    res.status(401).json({ message: 'Incorrect username. Please try again.' })
+    return res.status(401).json({ message: 'Incorrect username. Please try again.' })
   }
 
   const matchPwd = await matchPassword(foundUser.password, password);
 
   if (!matchPwd) {
-    res.status(401).json({ message: 'Incorrect password. Please try again!' });
+    return res.status(401).json({ message: 'Incorrect password. Please try again!' });
   }
 
   const accessToken = await createToken(foundUser);
@@ -56,7 +56,7 @@ const refresh = async (req, res) => {
     return res.status(401).json({ message: 'Unauthorized' })
   };
 
-  const foundUser = User.findOne({ username: refreshTokenDecoded.username }).exec();
+  const foundUser = await User.findOne({ username: refreshTokenDecoded.UserInfo.username }).exec();
 
   if (!foundUser) return res.status(401).json({ message: 'Unauthorized' });
 
@@ -72,7 +72,7 @@ const logout = (req, res) => {
   const cookies = req.cookies;
   let cookieName = process.env.REFRESH_TOKEN_COOKIE_NAME;
 
-  if (!cookies?.cookieName) return res.sendStatus(204) //No content
+  if (cookies && !cookies[cookieName]) return res.sendStatus(204) //No content
   res.clearCookie(cookieName, { httpOnly: true, sameSite: 'None', secure: true })
   res.json({ message: 'Cookie cleared' });
 };

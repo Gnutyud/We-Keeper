@@ -6,12 +6,16 @@ const Provider = ({ children }) => {
   const [state, dispatch] = React.useReducer(reducer, initialState);
 
   const value = {
+    auth: state.auth,
     noteData: state.noteData,
     isSearching: state.isSearching,
     searchNoteResult: state.searchNoteResult,
     searchInput: state.searchInput,
     isViewing: state.isViewing,
     viewingNote: state.viewingNote,
+    setAuth: (authData) => {
+      dispatch({ type: actions.SET_AUTH, authData});
+    },
     addNoteItem: (noteItem) => {
       dispatch({ type: actions.ADD_NOTE_ITEM, noteItem });
     },
