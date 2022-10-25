@@ -3,12 +3,14 @@ import useRefreshToken from "../../hooks/useRefreshToken";
 import AppContext from "../../store/context";
 import { Outlet } from "react-router-dom";
 
-const PrivateRoute = ({ children }) => {
+const PrivateRoute = () => {
   const { auth } = useContext(AppContext);
   const [isLoading, setIsLoading] = useState(true);
   const refreshToken = useRefreshToken();
 
   useEffect(() => {
+    let isMounted = true;
+
     const verifyRefreshToken = async () => {
       try {
         await refreshToken();
@@ -16,12 +18,14 @@ const PrivateRoute = ({ children }) => {
         console.error(error)
       }
       finally {
-        setIsLoading(false);
+        isMounted && setIsLoading(false);
       }
     }
     console.log(auth?.accessToken)
 
     !auth?.accessToken ? verifyRefreshToken() : setIsLoading(false);
+
+    return () => isMounted = false;
   }, [])
 
   useEffect(() => {

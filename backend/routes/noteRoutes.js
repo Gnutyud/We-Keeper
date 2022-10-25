@@ -4,9 +4,13 @@ const noteController = require('../controllers/noteController');
 const { authByToken } = require('../middleware/auth');
 
 router.route('/')
-  .get(authByToken, noteController.getAllNotes)
   .post(authByToken, noteController.createNewNote)
   .patch(authByToken, noteController.updateNote)
+
+router.route('/:userId')
+  .get(authByToken, noteController.getNotes)
+
+router.route('/:id')
   .delete(authByToken, noteController.deleteNote)
 
-  module.exports = router;
+module.exports = router;

@@ -1,5 +1,3 @@
-import appApi from "../services/appApi";
-
 export const actions = {
   SET_AUTH: "SET_AUTH",
   ADD_NOTE_ITEM: "ADD_NOTE_ITEM",
@@ -37,7 +35,6 @@ const reducer = (state, action) => {
     }
     case actions.REMOVE_NOTE_ITEM: {
       let id = action.noteItemId;
-      appApi.deleteNote(id);
       const updatedNotes = state.noteData.filter((note) => note.id !== id)
       return {
         ...state,

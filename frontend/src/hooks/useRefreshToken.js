@@ -1,22 +1,24 @@
 import { useContext } from 'react';
 import AppContext from '../store/context';
 import appApi from '../services/appApi';
+import { useNavigate } from 'react-router-dom';
 
 const useRefreshToken = () => {
-    const { setAuth } = useContext(AppContext);
+  const { setAuth } = useContext(AppContext);
+  const navigate = useNavigate();
 
-    const refresh = async () => {
-      try {
-        const response = await appApi.getRefreshToken();
-        setAuth(response);
-        console.log(response);
-        return response?.accessToken;
-        
-      } catch (error) {
-        console.log(error)
-      }
+  const refresh = async () => {
+    try {
+      const response = await appApi.getRefreshToken();
+      setAuth(response);
+      return response?.accessToken;
+
+    } catch (error) {
+      console.error(error);
+      navigate('/login');
     }
-    return refresh;
+  }
+  return refresh;
 };
 
 export default useRefreshToken;

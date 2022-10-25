@@ -34,7 +34,7 @@ const login = asyncHandler(async (req, res) => {
     maxAge: 7 * 24 * 60 * 60 * 1000 //cookie expiry: set to match rT
   })
 
-  res.json({ accessToken });
+  res.json({ accessToken, userId: foundUser._id });
 });
 
 // @desc Refresh
@@ -49,20 +49,26 @@ const refresh = async (req, res) => {
   }
 
   const refreshToken = cookies[cookieName];
+  try {
+    const refreshTokenDecoded = await verifyJwtToken(refreshToken, process.env.JWT_SECRET_REFRESH_TOKEN);
 
-  const refreshTokenDecoded = await verifyJwtToken(refreshToken, process.env.JWT_SECRET_REFRESH_TOKEN);
+    if (!refreshTokenDecoded) {
+      return res.status(401).json({ message: 'Unauthorized' })
+    };
 
-  if (!refreshTokenDecoded) {
-    return res.status(401).json({ message: 'Unauthorized' })
-  };
+    const foundUser = await User.findOne({ username: refreshTokenDecoded.UserInfo.username }).exec();
 
-  const foundUser = await User.findOne({ username: refreshTokenDecoded.UserInfo.username }).exec();
+    if (!foundUser) return res.status(401).json({ message: 'Unauthorized' });
 
-  if (!foundUser) return res.status(401).json({ message: 'Unauthorized' });
+    const accessToken = await createToken(foundUser);
 
-  const accessToken = await createToken(foundUser);
+    res.json({ accessToken, userId: foundUser._id });
 
-  res.json({ accessToken });
+  } catch (error) {
+    return res.status(403).json({
+      errors: { body: ['Forbidden', error.message] }
+    })
+  }
 };
 
 // @desc Logout

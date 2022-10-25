@@ -1,13 +1,12 @@
 import axios from 'axios';
 
-const baseURL = 'https://wekeep-app-39b7e-default-rtdb.asia-southeast1.firebasedatabase.app';
+const baseURL = process.env.REACT_APP_BASE_URL;
 
 // axios client
 const axiosClient = axios.create({
   baseURL,
   headers: {
     'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': '*',
   }
 });
 
@@ -32,11 +31,10 @@ export default axiosClient;
 
 // Private axios
 export const axiosPrivate = axios.create({
-  baseURL: process.env.REACT_APP_BASE_URL,
+  baseURL,
   headers: { 'Content-Type': 'application/json' },
+  withCredentials: true
 });
-
-axiosPrivate.defaults.withCredentials = true;
 
 axiosPrivate.interceptors.request.use(function (config) {
   return config;

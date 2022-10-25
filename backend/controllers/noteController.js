@@ -5,15 +5,15 @@ const asyncHandler = require('express-async-handler');
 // @desc get all notes
 // @route GET /notes
 // @access Private 
-const getAllNotes = asyncHandler(async (req, res) => {
-  const { userId } = req.body;
+const getNotes = asyncHandler(async (req, res) => {
+  const { userId } = req.params;
 
-  if(!userId) return res.status(400).json({ message: 'userId is required' })
+  if (!userId) return res.status(400).json({ message: 'userId is required' })
   // Get all notes from moongose DB
   const notes = await Note.find({ userId }).lean();
 
   if (!notes?.length) {
-    return res.status(400).json({ message: 'No notes found!' });
+    return res.status(200).json([]);
   }
 
   // Add username to each note before sending the response 
@@ -29,7 +29,7 @@ const getAllNotes = asyncHandler(async (req, res) => {
 // @route POST /notes
 // @access Private
 const createNewNote = asyncHandler(async (req, res) => {
-  const { userId, title, text } = req.body;
+  const { userId, title, text, color } = req.body;
 
   if (!userId || !title || !text) {
     return res.status(400).json({ message: 'All fields are required!' })
@@ -42,7 +42,12 @@ const createNewNote = asyncHandler(async (req, res) => {
   }
 
   // create and store Note
-  const note = await Note.create({ userId, title, text });
+  let note;
+  if (color) {
+    note = await Note.create({ userId, title, text, color });
+  } else {
+    note = await Note.create({ userId, title, text });
+  }
   if (note) {
     return res.status(201).json({ message: 'Successfully create note' })
   } else {
@@ -54,10 +59,10 @@ const createNewNote = asyncHandler(async (req, res) => {
 // @route PATCH /notes
 // @access Private
 const updateNote = asyncHandler(async (req, res) => {
-  const { id, userId, title, text, completed } = req.body
+  const { id, userId, title, text, color } = req.body
 
   // Confirm data
-  if (!id || !userId || !title || !text || typeof completed !== 'boolean') {
+  if (!id || !userId || !title || !text) {
     return res.status(400).json({ message: 'All fields are required' })
   }
 
@@ -79,7 +84,7 @@ const updateNote = asyncHandler(async (req, res) => {
   note.userId = userId
   note.title = title
   note.text = text
-  note.completed = completed
+  note.color = color
 
   const updatedNote = await note.save()
 
@@ -90,7 +95,7 @@ const updateNote = asyncHandler(async (req, res) => {
 // @route DELETE /notes
 // @access Private
 const deleteNote = asyncHandler(async (req, res) => {
-  const { id } = req.body
+  const { id } = req.params;
 
   // Confirm data
   if (!id) {
@@ -112,7 +117,7 @@ const deleteNote = asyncHandler(async (req, res) => {
 })
 
 module.exports = {
-  getAllNotes,
+  getNotes,
   createNewNote,
   updateNote,
   deleteNote

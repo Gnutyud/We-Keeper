@@ -1,23 +1,23 @@
 import { useContext, useState } from 'react';
-import appApi from '../../services/appApi';
 import AppContext from '../../store/context';
 import NoteBox from './NoteBox';
+import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
 const AddNote = () => {
-  const {addNoteItem} = useContext(AppContext);
+  const { fetchNotes, auth } = useContext(AppContext);
   const [title, setTitle] = useState('');
   const [text, setText] = useState('');
   const [color, setColor] = useState('');
   const [show, setShow] = useState(false);
+  const axiosPrivate = useAxiosPrivate();
 
   const addNote = async () => {
-    const d = new Date();
-    const createdAt = d.toISOString();
-    const note = {title, text, color, createdAt}
+    const note = { title, text, color, userId: auth?.userId }
+
     try {
-      let res = await appApi.saveNote(note);
-      note.id = res.name;
-      addNoteItem(note);
+      await axiosPrivate.post('/notes', note);
+      const response = await axiosPrivate.get(`/notes/${auth?.userId}`);
+      fetchNotes(response);
     } catch (err) {
       console.error(err);
     }
@@ -50,7 +50,7 @@ const AddNote = () => {
   // textareaLine(text);
   return (
     <NoteBox
-      openAdd={()=> setShow(true)}
+      openAdd={() => setShow(true)}
       display={show}
       onSubmit={onSubmitAdd}
       text={text}
