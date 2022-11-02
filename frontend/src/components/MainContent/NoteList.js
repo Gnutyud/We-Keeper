@@ -5,15 +5,17 @@ import NoteBox from './NoteBox';
 import NoteItem from './NoteItem';
 import Modal from '../UI/Modal';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
+import { useNavigate } from 'react-router-dom';
 
 const NoteList = () => {
   // Update or Edit notes
-  const { fetchNotes, auth, noteData, isSearching, searchNoteResult, searchInput, setSearchInput, turnOffSearchingMode, isViewing, viewingNote, turnOnViewingMode, turnOffViewingMode } = useContext(AppContext);
+  const { fetchNotes, auth, noteData, isSearching, searchNoteResult, searchInput, setSearchInput, turnOffSearchingMode, isViewing, viewingNote, turnOnViewingMode, turnOffViewingMode, selectedNote, setSelectedNote } = useContext(AppContext);
   const [id, setId] = useState(null);
   const [text, setText] = useState('');
   const [title, setTitle] = useState('');
   const [color, setColor] = useState('');
   const axiosPrivate = useAxiosPrivate();
+  const navigate = useNavigate();
 
   const updatedNote = async () => {
     const body = {
@@ -64,6 +66,11 @@ const NoteList = () => {
     turnOffViewingMode();
   }
 
+  const handleOnClickNote = (note) => {
+    setSelectedNote(note);
+    navigate(`/notes/${note._id}`)
+  }
+
   // when click on search input
   if (isSearching) {
     if (searchNoteResult.length === 0) {
@@ -99,45 +106,45 @@ const NoteList = () => {
     );
   }
   // When click on edit icon => render edit modal
-  if (id) {
-    //  take the text value to pass the set row number func for textarea input form
-    return (
-      <Modal onClick={cancelEdit}>
-        <NoteBox
-          display={true}
-          onSubmit={onSubmitUpdate}
-          text={text}
-          setText={setText}
-          title={title}
-          setTitle={setTitle}
-          color={color}
-          setColor={setColor}
-          cName={'add-content edit-form'}
-          submitName={'Update'}
-          onCancel={cancelEdit}
-        />
-      </Modal>
-    );
-  }
-  // When click on the note item then open view mode
-  if (isViewing && viewingNote) {
-    return (
-      <Modal onClick={() => turnOffViewingMode()}>
-        <NoteItem
-          color={viewingNote.color}
-          key={viewingNote.id}
-          text={viewingNote.text}
-          title={viewingNote.title}
-          createdAt={viewingNote.createdAt}
-          updatedAt={viewingNote.updatedAt}
-          isViewing={isViewing}
-          onClose={() => turnOffViewingMode()}
-          handleClick={() => handleClick(viewingNote)}
-          removeNoteItem={() => deleteNote(viewingNote._id)}
-        />
-      </Modal>
-    );
-  }
+  // if (id) {
+  //   //  take the text value to pass the set row number func for textarea input form
+  //   return (
+  //     <Modal onClick={cancelEdit}>
+  //       <NoteBox
+  //         display={true}
+  //         onSubmit={onSubmitUpdate}
+  //         text={text}
+  //         setText={setText}
+  //         title={title}
+  //         setTitle={setTitle}
+  //         color={color}
+  //         setColor={setColor}
+  //         cName={'add-content edit-form'}
+  //         submitName={'Update'}
+  //         onCancel={cancelEdit}
+  //       />
+  //     </Modal>
+  //   );
+  // }
+  // // When click on the note item then open view mode
+  // if (isViewing && viewingNote) {
+  //   return (
+  //     <Modal onClick={() => turnOffViewingMode()}>
+  //       <NoteItem
+  //         color={viewingNote.color}
+  //         key={viewingNote.id}
+  //         text={viewingNote.text}
+  //         title={viewingNote.title}
+  //         createdAt={viewingNote.createdAt}
+  //         updatedAt={viewingNote.updatedAt}
+  //         isViewing={isViewing}
+  //         onClose={() => turnOffViewingMode()}
+  //         handleClick={() => handleClick(viewingNote)}
+  //         removeNoteItem={() => deleteNote(viewingNote._id)}
+  //       />
+  //     </Modal>
+  //   );
+  // }
   // Render note items
   return (
     <div className='note-content'>
@@ -150,7 +157,7 @@ const NoteList = () => {
           isViewing={isViewing}
           handleClick={() => handleClick(note)}
           removeNoteItem={() => deleteNote(note._id)}
-          onClick={() => turnOnViewingMode(note)} />
+          onClick={() => handleOnClickNote(note)} />
       ))}
     </div>
   );

@@ -12,7 +12,10 @@ const Provider = ({ children }) => {
     searchNoteResult: state.searchNoteResult,
     searchInput: state.searchInput,
     isViewing: state.isViewing,
+    isEdit: state.isEdit,
     viewingNote: state.viewingNote,
+    selectedNote: state.selectedNote,
+    viewingMode: state.viewingMode,
     setAuth: (authData) => {
       dispatch({ type: actions.SET_AUTH, authData});
     },
@@ -31,8 +34,8 @@ const Provider = ({ children }) => {
     turnOffSearchingMode: () => {
       dispatch({type: actions.TURN_OFF_SEARCHING_MODE});
     },
-    turnOnViewingMode: (viewData) => {
-      dispatch({type: actions.TURN_ON_VIEWING_MODE, viewData});
+    setViewingMode: (mode) => {
+      dispatch({type: actions.SET_VIEWING_MODE, mode});
     },
     turnOffViewingMode: () => {
       dispatch({type: actions.TURN_OFF_VIEWING_MODE});
@@ -42,6 +45,9 @@ const Provider = ({ children }) => {
     },
     setSearchInput: (searchInput) => {
       dispatch({type: actions.SET_SEARCH_INPUT, searchInput});
+    },
+    setSelectedNote: (noteData) => {
+      dispatch({type: actions.SET_SELECTED_NOTE, noteData});
     }
   };
 

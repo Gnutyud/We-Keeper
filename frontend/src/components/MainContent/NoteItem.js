@@ -2,6 +2,11 @@ import moment from "moment";
 import React from "react";
 
 const NoteItem = (props) => {
+  
+  const handleDeleteNote = (e) => {
+    e.preventDefault();
+    props.removeNoteItem();
+  }
   return <div
       className={props.isViewing ? "note-box edit-form viewing" : "note-box note-box-item"}
       style={{ backgroundColor: props.color }}
@@ -15,7 +20,7 @@ const NoteItem = (props) => {
     <i
       className='fa fa-trash-o'
       aria-hidden='true'
-      onClick={props.removeNoteItem}></i>
+      onClick={(e) => handleDeleteNote(e)}></i>
       <div className="viewing-content">
         {props.createdAt && <div className="createdAt" style={{ padding: "10px 0px 0px 0px" }}>Created At: {moment(props.createdAt).calendar()}</div>}
         <h3 className={!props.isViewing ? "title-preview" : ""}>{props.title}</h3>
