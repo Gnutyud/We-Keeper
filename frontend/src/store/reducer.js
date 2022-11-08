@@ -4,11 +4,12 @@ export const actions = {
   REMOVE_NOTE_ITEM: "REMOVE_NOTE_ITEM",
   TURN_ON_SEARCHING_MODE: "TURN_ON_SEARCHING_MODE",
   TURN_OFF_SEARCHING_MODE: "TURN_OFF_SEARCHING_MODE",
-  TURN_ON_VIEWING_MODE: "TURN_ON_VIEWING_MODE",
+  SET_VIEWING_MODE: "SET_VIEWING_MODE",
   TURN_OFF_VIEWING_MODE: "TURN_OFF_VIEWING_MODE",
   FETCH_NOTE_LIST: "FETCH_NOTE_LIST",
   SET_SEARCH_RESULT: "SET_SEARCH_RESULT",
   SET_SEARCH_INPUT: "SET_SEARCH_INPUT",
+  SET_SELECTED_NOTE: "SET_SELECTED_NOTE",
 };
 
 const reducer = (state, action) => {
@@ -61,12 +62,10 @@ const reducer = (state, action) => {
         isSearching: false,
       }
     }
-    case actions.TURN_ON_VIEWING_MODE: {
-      console.log(action.viewData);
+    case actions.SET_VIEWING_MODE: {
       return {
         ...state,
-        isViewing: true,
-        viewingNote: action.viewData,
+        viewingMode: action.mode,
         isSearching: false,
         searchInput: "",
         searchNoteResult: [],
@@ -75,8 +74,7 @@ const reducer = (state, action) => {
     case actions.TURN_OFF_VIEWING_MODE: {
       return {
         ...state,
-        isViewing: false,
-        viewingNote: "",
+        viewingMode: "",
       }
     }
     case actions.SET_SEARCH_RESULT: {
@@ -89,6 +87,14 @@ const reducer = (state, action) => {
       return {
         ...state,
         searchInput: action.searchInput,
+      }
+    }
+    case actions.SET_SELECTED_NOTE: {
+      return {
+        ...state,
+        selectedNote: action.noteData,
+        isViewing: true,
+        viewingMode: "view",
       }
     }
     default:

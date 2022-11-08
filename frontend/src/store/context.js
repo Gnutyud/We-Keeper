@@ -7,13 +7,15 @@ export const initialState = {
   searchNoteResult: [],
   searchInput: "",
   isViewing: false,
+  isEdit: false,
   viewingNote: "",
+  selectedNote: {},
+  viewingMode: "",
 };
 
 const AppContext = createContext({
   state: initialState,
   dispatch: () => null,
 });
-// const AppContext = createContext();
 
 export default AppContext;

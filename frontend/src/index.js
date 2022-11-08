@@ -7,15 +7,17 @@ import Provider from './store/Provider';
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import PrivateRoute from './components/helper/PrivateRoute';
 import Login from './components/Login';
+import ViewingNote from './components/ViewingNote';
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider>
       <BrowserRouter>
         <Routes>
-          <Route path='/login' element={<Login />} />
-          <Route path='/notes' element={<PrivateRoute />}>
+          <Route path="/login" element={<Login />} />
+          <Route path="/notes" element={<PrivateRoute />}>
             <Route index element={<App />} />
+            <Route path=":id" element={<ViewingNote />}/>
           </Route>
           <Route
             path="/"
