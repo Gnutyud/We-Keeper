@@ -11,30 +11,19 @@ const ViewingNote = () => {
   const {
     fetchNotes,
     auth,
-    ViewingMode,
+    viewingMode,
     setSearchInput,
     turnOffSearchingMode,
     turnOffViewingMode,
     setViewingMode,
     selectedNote,
   } = useContext(AppContext);
-//   const [id, setId] = useState(null);
-//   const [text, setText] = useState('');
-//   const [title, setTitle] = useState('');
-//   const [color, setColor] = useState('');
   const [updateNote, setUpdateNote] = useState(selectedNote);
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
 
   const updatedNote = async () => {
-    // const body = {
-    //   id: id,
-    //   title: title,
-    //   text: text,
-    //   color: color,
-    //   userId: auth?.userId,
-    // };
-    await axiosPrivate.patch('/notes', updateNote);
+    await axiosPrivate.patch('/notes', {...updateNote, id: updateNote._id});
     const response = await axiosPrivate.get(`/notes/${auth?.userId}`);
     fetchNotes(response);
   };
@@ -51,9 +40,6 @@ const ViewingNote = () => {
 
   const onSubmitUpdate = () => {
     updatedNote();
-    // setId(null);
-    // setTitle('');
-    // setText('');
     turnOffViewingMode();
   };
 
@@ -66,13 +52,10 @@ const ViewingNote = () => {
     onCloseSearchTab();
     setViewingMode("edit");
   };
-  const cancelEdit = () => {
-    turnOffViewingMode();
-  };
 
-  if (ViewingMode === "edit")
+  if (viewingMode === "edit")
     return (
-      <Modal onClick={cancelEdit}>
+      <Modal onClick={() => turnOffViewingMode()}>
         <NoteBox
           display={true}
           onSubmit={onSubmitUpdate}
@@ -84,28 +67,26 @@ const ViewingNote = () => {
           setColor={(updateColor) => setUpdateNote((prev) => ({ ...prev, color: updateColor }))}
           cName={'add-content edit-form'}
           submitName={'Update'}
-          onCancel={cancelEdit}
+          onCancel={() => setViewingMode("view")}
         />
       </Modal>
     );
 
-  if (!ViewingMode) {
+  if (!viewingMode) {
     navigate('/notes');
   }
 
   return (
     <Modal onClick={() => turnOffViewingMode()}>
       <NoteItem
-        color={selectedNote.color}
         key={selectedNote.id}
-        text={selectedNote.text}
-        title={selectedNote.title}
-        createdAt={selectedNote.createdAt}
-        updatedAt={selectedNote.updatedAt}
-        isViewing={ViewingMode === "view"}
+        data={selectedNote}
         onClose={() => turnOffViewingMode()}
-        handleClick={() => handleClick()}
-        removeNoteItem={() => deleteNote(selectedNote._id)}
+        handleEdit={() => handleClick()}
+        removeNoteItem={() => {
+            deleteNote(selectedNote._id);
+            turnOffViewingMode();
+        }}
       />
     </Modal>
   );
