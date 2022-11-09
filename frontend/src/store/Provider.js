@@ -1,6 +1,6 @@
-import React from "react";
-import AppContext, { initialState } from "./context";
-import reducer, { actions } from "./reducer";
+import React from 'react';
+import AppContext, { initialState } from './context';
+import reducer, { actions } from './reducer';
 
 const Provider = ({ children }) => {
   const [state, dispatch] = React.useReducer(reducer, initialState);
@@ -17,7 +17,7 @@ const Provider = ({ children }) => {
     selectedNote: state.selectedNote,
     viewingMode: state.viewingMode,
     setAuth: (authData) => {
-      dispatch({ type: actions.SET_AUTH, authData});
+      dispatch({ type: actions.SET_AUTH, authData });
     },
     addNoteItem: (noteItem) => {
       dispatch({ type: actions.ADD_NOTE_ITEM, noteItem });
@@ -26,36 +26,35 @@ const Provider = ({ children }) => {
       dispatch({ type: actions.REMOVE_NOTE_ITEM, noteItemId });
     },
     fetchNotes: (noteData) => {
-      dispatch({ type: actions.FETCH_NOTE_LIST, noteData});
+      dispatch({ type: actions.FETCH_NOTE_LIST, noteData });
     },
     turnOnSearchingMode: () => {
-      dispatch({type: actions.TURN_ON_SEARCHING_MODE});
+      dispatch({ type: actions.TURN_ON_SEARCHING_MODE });
     },
     turnOffSearchingMode: () => {
-      dispatch({type: actions.TURN_OFF_SEARCHING_MODE});
+      dispatch({ type: actions.TURN_OFF_SEARCHING_MODE });
     },
     setViewingMode: (mode) => {
-      dispatch({type: actions.SET_VIEWING_MODE, mode});
+      dispatch({ type: actions.SET_VIEWING_MODE, mode });
     },
     turnOffViewingMode: () => {
-      dispatch({type: actions.TURN_OFF_VIEWING_MODE});
+      dispatch({ type: actions.TURN_OFF_VIEWING_MODE });
     },
     setSearchResult: (searchResult) => {
-      dispatch({type: actions.SET_SEARCH_RESULT, searchResult});
+      dispatch({ type: actions.SET_SEARCH_RESULT, searchResult });
     },
     setSearchInput: (searchInput) => {
-      dispatch({type: actions.SET_SEARCH_INPUT, searchInput});
+      dispatch({ type: actions.SET_SEARCH_INPUT, searchInput });
     },
     setSelectedNote: (noteData) => {
-      dispatch({type: actions.SET_SELECTED_NOTE, noteData});
-    }
+      dispatch({ type: actions.SET_SELECTED_NOTE, noteData });
+    },
+    logout: () => {
+      dispatch({ type: actions.LOG_OUT });
+    },
   };
 
-  return (
-    <AppContext.Provider value={value}>
-      {children}
-    </AppContext.Provider>
-  );
+  return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 };
 
 export default Provider;
