@@ -25,8 +25,8 @@ const Provider = ({ children }) => {
     removeNoteItem: (noteItemId) => {
       dispatch({ type: actions.REMOVE_NOTE_ITEM, noteItemId });
     },
-    fetchNotes: (noteData) => {
-      dispatch({ type: actions.FETCH_NOTE_LIST, noteData });
+    setNoteList: (noteData) => {
+      dispatch({ type: actions.SET_NOTE_LIST, noteData });
     },
     turnOnSearchingMode: () => {
       dispatch({ type: actions.TURN_ON_SEARCHING_MODE });

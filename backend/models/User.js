@@ -16,6 +16,10 @@ const UserSchema = new mongoose.Schema({
   active: {
     type: Boolean,
     default: true
+  },
+  email: {
+    type: String,
+    required: true
   }
 });
 

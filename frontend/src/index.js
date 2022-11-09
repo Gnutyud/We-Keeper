@@ -1,30 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import { BrowserRouter } from 'react-router-dom';
 import App from './App';
+import './index.css';
 import reportWebVitals from './reportWebVitals';
 import Provider from './store/Provider';
-import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
-import PrivateRoute from './components/helper/PrivateRoute';
-import Login from './components/Login';
-import ViewingNote from './components/ViewingNote';
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider>
       <BrowserRouter>
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/notes" element={<PrivateRoute />}>
-            <Route index element={<App />} />
-            <Route path=":id" element={<ViewingNote />}/>
-          </Route>
-          <Route
-            path="/"
-            element={<Navigate to="/notes" replace />}
-          />
-          <Route path="*" element={<h1>Page not found!</h1>} />
-        </Routes>
+        <App />
       </BrowserRouter>
     </Provider>
   </React.StrictMode>,

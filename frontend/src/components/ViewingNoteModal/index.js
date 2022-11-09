@@ -2,11 +2,11 @@ import Modal from '../UI/Modal';
 import AppContext from '../../store/context';
 import { useContext, useState } from 'react';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
-import NoteItem from '../MainContent/NoteItem';
-import NoteBox from '../MainContent/NoteBox';
+import NoteItem from '../MyNotesContent/NoteItem';
+import NoteBox from '../MyNotesContent/NoteBox';
 import { useNavigate } from 'react-router-dom';
 
-const ViewingNote = () => {
+const ViewingNoteModal = () => {
   // Update or Edit notes
   const {
     fetchNotes,
@@ -73,7 +73,7 @@ const ViewingNote = () => {
     );
 
   if (!viewingMode) {
-    navigate('/notes');
+    navigate('/');
   }
 
   return (
@@ -92,4 +92,4 @@ const ViewingNote = () => {
   );
 };
 
-export default ViewingNote;
+export default ViewingNoteModal;

@@ -1,5 +1,3 @@
-import appApi from '../services/appApi';
-
 export const actions = {
   SET_AUTH: 'SET_AUTH',
   ADD_NOTE_ITEM: 'ADD_NOTE_ITEM',
@@ -8,7 +6,7 @@ export const actions = {
   TURN_OFF_SEARCHING_MODE: 'TURN_OFF_SEARCHING_MODE',
   SET_VIEWING_MODE: 'SET_VIEWING_MODE',
   TURN_OFF_VIEWING_MODE: 'TURN_OFF_VIEWING_MODE',
-  FETCH_NOTE_LIST: 'FETCH_NOTE_LIST',
+  SET_NOTE_LIST: 'SET_NOTE_LIST',
   SET_SEARCH_RESULT: 'SET_SEARCH_RESULT',
   SET_SEARCH_INPUT: 'SET_SEARCH_INPUT',
   SET_SELECTED_NOTE: 'SET_SELECTED_NOTE',
@@ -47,7 +45,7 @@ const reducer = (state, action) => {
         viewingNote: '',
       };
     }
-    case actions.FETCH_NOTE_LIST: {
+    case actions.SET_NOTE_LIST: {
       return {
         ...state,
         noteData: action.noteData,

@@ -1,33 +1,23 @@
-import React, { useContext, useEffect } from "react";
-import Header from "./components/Header";
-import MainContent from "./components/MainContent";
-import AppContext from "./store/context";
-import useAxiosPrivate from "./hooks/useAxiosPrivate";
+import React from "react";
+import Login from "./components/Login";
+import { Route, Routes } from 'react-router-dom';
+import MyNotes from "./pages/MyNotes";
+import ViewingNoteModal from "./components/ViewingNoteModal";
+import PrivateRoute from "./components/helper/PrivateRoute";
+import Register from "./components/Register";
 
 function App() {
 
-  const { fetchNotes, auth } = useContext(AppContext);
-  const axiosPrivate = useAxiosPrivate();
-  // get notes
-  useEffect(() => {
-
-    const getNotes = async () => {
-      try {
-        const response = await axiosPrivate.get(`/notes/${auth?.userId}`);
-        fetchNotes(response);
-      } catch (error) {
-        console.error(error)
-      }
-    }
-    getNotes();
-    // eslint-disable-next-line
-  }, []);
-
   return (
-    <div>
-      <Header />
-      <MainContent />
-    </div>
+    <Routes>
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/" element={<PrivateRoute />}>
+        <Route index element={<MyNotes />} />
+        <Route path=":id" element={<ViewingNoteModal />} />
+      </Route>
+      <Route path="*" element={<h1>Page not found!</h1>} />
+    </Routes>
   );
 }
 
