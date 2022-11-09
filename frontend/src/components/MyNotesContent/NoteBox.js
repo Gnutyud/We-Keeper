@@ -1,4 +1,6 @@
 import moment from "moment";
+import { useRef } from "react";
+import useOnClickOutside from "../../hooks/useOnClickOutside";
 
 const NoteBox = ({
   title,
@@ -31,10 +33,16 @@ const NoteBox = ({
     { name: "brown", color: "#e6c9a8" },
     { name: "gray", color: "#e8eaed" },
   ];
+  const ref = useRef();
+  useOnClickOutside(ref, () => {
+    if(display) onCancel();
+  });
+
   return (
     <form
       className={cName}
       onSubmit={onSubmit}
+      ref={ref}
       style={{ backgroundColor: color }}>
       {createdAt && <div className="createdAt">Created At: {moment(createdAt).calendar()}</div>}
       {display && (

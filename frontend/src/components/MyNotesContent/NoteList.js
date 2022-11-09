@@ -40,12 +40,12 @@ const NoteList = () => {
   const handleClick = (note) => {
     onCloseSearchTab();
     setViewingMode("edit");
-    navigate(`/notes/${note._id}`);
+    navigate(`/${note._id}`);
   };
 
   const handleOnClickNote = (note) => {
     setSelectedNote(note);
-    navigate(`/notes/${note._id}`);
+    navigate(`/${note._id}`);
   };
 
   // when click on search input

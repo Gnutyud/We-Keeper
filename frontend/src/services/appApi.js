@@ -14,6 +14,9 @@ const appApi = {
     method: "post",
     withCredentials: true,
   }),
+  register: (data) => {
+    return axiosClient.post("/users", data);
+  }
 };
 
 export default appApi;

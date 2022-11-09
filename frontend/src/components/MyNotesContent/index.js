@@ -3,7 +3,7 @@ import AppContext from '../../store/context';
 import AddNote from './AddNote';
 import NoteList from './NoteList';
 
-const MainContent = () => {
+const MyNotesContent = () => {
   const { isSearching } = React.useContext(AppContext);
 
   return <React.Fragment>
@@ -12,4 +12,4 @@ const MainContent = () => {
   </React.Fragment>
 };
 
-export default MainContent;
+export default MyNotesContent;

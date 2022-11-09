@@ -14,13 +14,14 @@ const Profile = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const ref = useRef();
   useOnClickOutside(ref, () => setShowDropdown(false));
-  const { logout } = useContext(AppContext);
+  const { logout, setNoteList } = useContext(AppContext);
   const navigate = useNavigate();
 
   const handleLogout = async () => {
     try {
       await appApi.logout();
       logout();
+      setNoteList([]);
       navigate('/login');
     } catch (error) {
       console.error(error);

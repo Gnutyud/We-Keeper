@@ -110,12 +110,15 @@
       margin-top: 3px;
       .checkbox {
         display: flex;
-        align-items: center;
+        align-items: flex-start;
         input {
           margin-right: 5px;
           width: 18px;
           height: 18px;
           accent-color: #224957;
+        }
+        label {
+          flex: 1;
         }
       }
       button {
