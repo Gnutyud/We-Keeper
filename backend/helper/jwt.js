@@ -25,7 +25,7 @@ const createRefreshToken = async (user) => {
       }
     },
       process.env.JWT_SECRET_REFRESH_TOKEN,
-      { expiresIn: "1d" }, (err, token) => {
+      { expiresIn: "7d" }, (err, token) => {
         if (err) return reject(err);
         return resolve(token)
       })
