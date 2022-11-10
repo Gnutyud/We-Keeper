@@ -1,13 +1,13 @@
-import React from "react";
-import Login from "./components/Login";
+import React from 'react';
 import { Route, Routes } from 'react-router-dom';
-import MyNotes from "./pages/MyNotes";
-import ViewingNoteModal from "./components/ViewingNoteModal";
-import PrivateRoute from "./components/helper/PrivateRoute";
-import Register from "./components/Register";
+import PrivateRoute from './components/helper/PrivateRoute';
+import Login from './components/Login';
+import Register from './components/Register';
+import ViewingNoteModal from './components/ViewingNoteModal';
+import PageNotFound from './pages/404';
+import MyNotes from './pages/MyNotes';
 
 function App() {
-
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
@@ -16,7 +16,7 @@ function App() {
         <Route index element={<MyNotes />} />
         <Route path=":id" element={<ViewingNoteModal />} />
       </Route>
-      <Route path="*" element={<h1>Page not found!</h1>} />
+      <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
 }
