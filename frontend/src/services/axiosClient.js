@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseURL = process.env.REACT_APP_BASE_URL || "https://wekeep-backend.onrender.com";
+const baseURL = process.env.REACT_APP_BASE_URL;
 
 // axios client
 const axiosClient = axios.create({
