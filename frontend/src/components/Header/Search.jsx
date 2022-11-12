@@ -1,15 +1,22 @@
-import PropTypes from 'prop-types';
-import { useContext } from 'react';
+import React, { useContext } from 'react';
 import AppContext from '../../store/context';
 
-const Search = ({ text, cname }) => {
-  const { noteData, turnOnSearchingMode, turnOffSearchingMode, setSearchResult, isSearching, searchInput, setSearchInput } = useContext(AppContext);
+function Search({ text, cname }) {
+  const {
+    noteData,
+    turnOnSearchingMode,
+    turnOffSearchingMode,
+    setSearchResult,
+    isSearching,
+    searchInput,
+    setSearchInput,
+  } = useContext(AppContext);
 
   const searchHandle = () => {
     turnOnSearchingMode();
     // get matches to current text input search
     let matches = noteData.filter((note) => {
-      const regex = new RegExp(`${searchInput}`, "gmi");
+      const regex = new RegExp(`${searchInput}`, 'gmi');
       return note.title.match(regex) || note.text.match(regex);
     });
     if (searchInput.length === 0) {
@@ -19,34 +26,26 @@ const Search = ({ text, cname }) => {
   };
 
   const onCloseSearchTab = () => {
-    setSearchInput("");
+    setSearchInput('');
     turnOffSearchingMode();
   };
 
   return (
-    <div className='header-search'>
-      <i className='fa fa-search'></i>
+    <div className="header-search">
+      <i className="fa fa-search" />
       <input
         onChange={(e) => setSearchInput(e.target.value)}
         onClick={searchHandle}
         value={searchInput}
-        type='text'
+        type="text"
         placeholder={text}
         className={cname}
         onKeyUp={searchHandle}
       />
-      {isSearching && (
-        <i className='fa fa-times' aria-hidden='true' onClick={onCloseSearchTab}></i>
-      )}
+      {isSearching && <i className="fa fa-times" aria-hidden="true" onClick={onCloseSearchTab} />}
     </div>
   );
-};
-Search.prototypes = {
-  onClick: PropTypes.func.isRequired,
-  display: PropTypes.string,
-  color: PropTypes.string,
-  text: PropTypes.string,
-};
+}
 Search.defaultProps = {
   color: '#ffffff',
   display: 'none',

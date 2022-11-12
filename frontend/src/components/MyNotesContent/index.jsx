@@ -3,13 +3,15 @@ import AppContext from '../../store/context';
 import AddNote from './AddNote';
 import NoteList from './NoteList';
 
-const MyNotesContent = () => {
+function MyNotesContent() {
   const { isSearching } = React.useContext(AppContext);
 
-  return <React.Fragment>
-    {!isSearching && <AddNote />}
-    <NoteList />
-  </React.Fragment>
-};
+  return (
+    <>
+      {!isSearching && <AddNote />}
+      <NoteList />
+    </>
+  );
+}
 
 export default MyNotesContent;

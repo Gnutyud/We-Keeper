@@ -5,6 +5,7 @@ import Login from './components/Login';
 import Register from './components/Register';
 import ViewingNoteModal from './components/ViewingNoteModal';
 import PageNotFound from './pages/404';
+import Admin from './pages/Admin';
 import MyNotes from './pages/MyNotes';
 
 function App() {
@@ -12,6 +13,7 @@ function App() {
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/admin" element={<Admin />} />
       <Route path="/" element={<PrivateRoute />}>
         <Route index element={<MyNotes />} />
         <Route path=":id" element={<ViewingNoteModal />} />

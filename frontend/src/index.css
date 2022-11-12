@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 *,
 *::before,
 *::after {
@@ -10,7 +10,7 @@ body {
   padding: 0;
   margin: 0;
   font-size: 16px;
-  font-family: "Poppins", sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 
 .btn {
@@ -135,7 +135,7 @@ body {
   display: none;
 } */
 
-.add-content .addClick{
+.add-content .addClick {
   height: 45px;
 }
 
@@ -193,7 +193,7 @@ body {
   text-transform: capitalize;
 }
 
-.viewing{
+.viewing {
   width: 600px;
   height: 80%;
   display: flex;
@@ -201,13 +201,13 @@ body {
   justify-content: space-between;
 }
 
-.viewing-bottom{
+.viewing-bottom {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.viewing-content{
+.viewing-content {
   height: 75%;
 }
 
@@ -242,8 +242,8 @@ body {
   overflow: auto;
   font-family: inherit;
   resize: none;
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
 .note-box .text-view::-webkit-scrollbar {
@@ -409,11 +409,13 @@ body {
     position: relative;
   }
 
-  .add-content, .note-box {
+  .add-content,
+  .note-box {
     width: 320px;
   }
 
-  .note-box, .edit-form {
+  .note-box,
+  .edit-form {
     border-radius: 0px;
   }
 }
@@ -428,7 +430,8 @@ body {
     position: relative;
   }
 
-  .add-content, .note-box {
+  .add-content,
+  .note-box {
     width: 350px;
   }
 }
@@ -438,7 +441,8 @@ body {
     width: 300px;
   }
 
-  .add-content, .note-box {
+  .add-content,
+  .note-box {
     width: 300px;
   }
   .header-nav {

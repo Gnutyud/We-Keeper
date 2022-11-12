@@ -1,10 +1,10 @@
-import { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import useRefreshToken from '../../hooks/useRefreshToken';
 import AppContext from '../../store/context';
 import Loading from '../UI/Loading';
 
-const PrivateRoute = () => {
+function PrivateRoute() {
   const { auth } = useContext(AppContext);
   const [isLoading, setIsLoading] = useState(true);
   const refreshToken = useRefreshToken();
@@ -18,14 +18,20 @@ const PrivateRoute = () => {
       } catch (error) {
         console.error(error);
       } finally {
-        isMounted && setIsLoading(false);
+        if (isMounted) setIsLoading(false);
       }
     };
     console.log(auth?.accessToken);
 
-    !auth?.accessToken ? verifyRefreshToken() : setIsLoading(false);
+    if (!auth?.accessToken) {
+      verifyRefreshToken();
+    } else {
+      setIsLoading(false);
+    }
 
-    return () => (isMounted = false);
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   useEffect(() => {
@@ -33,7 +39,9 @@ const PrivateRoute = () => {
     console.log(`aT: ${JSON.stringify(auth?.accessToken)}`);
   }, [isLoading]);
 
-  return <>{isLoading ? <Loading /> : <Outlet />}</>;
-};
+  if (isLoading) return <Loading />;
+
+  return <Outlet />;
+}
 
 export default PrivateRoute;

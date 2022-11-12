@@ -7,24 +7,17 @@ const axiosClient = axios.create({
   baseURL,
   headers: {
     'Content-Type': 'application/json',
-  }
+  },
 });
 
-axiosClient.interceptors.request.use(function (config) {
-  return config;
-},
-  function (err) {
-    return Promise.reject(err)
-  }
+axiosClient.interceptors.request.use(
+  (config) => config,
+  (err) => Promise.reject(err)
 );
 
 axiosClient.interceptors.response.use(
-  function (res) {
-    return res.data;
-  },
-  function (err) {
-    return Promise.reject(err)
-  }
+  (res) => res.data,
+  (err) => Promise.reject(err)
 );
 
 export default axiosClient;
@@ -33,22 +26,15 @@ export default axiosClient;
 export const axiosPrivate = axios.create({
   baseURL,
   headers: { 'Content-Type': 'application/json' },
-  withCredentials: true
+  withCredentials: true,
 });
 
-axiosPrivate.interceptors.request.use(function (config) {
-  return config;
-},
-  function (err) {
-    return Promise.reject(err)
-  }
+axiosPrivate.interceptors.request.use(
+  (config) => config,
+  (err) => Promise.reject(err)
 );
 
 axiosPrivate.interceptors.response.use(
-  function (res) {
-    return res.data;
-  },
-  function (err) {
-    return Promise.reject(err)
-  }
+  (res) => res.data,
+  (err) => Promise.reject(err)
 );

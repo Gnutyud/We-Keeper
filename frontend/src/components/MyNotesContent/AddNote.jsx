@@ -1,9 +1,9 @@
-import { useContext, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import AppContext from '../../store/context';
 import NoteBox from './NoteBox';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
-const AddNote = () => {
+function AddNote() {
   const { fetchNotes, auth } = useContext(AppContext);
   const [title, setTitle] = useState('');
   const [text, setText] = useState('');
@@ -12,7 +12,7 @@ const AddNote = () => {
   const axiosPrivate = useAxiosPrivate();
 
   const addNote = async () => {
-    const note = { title, text, color, userId: auth?.userId }
+    const note = { title, text, color, userId: auth?.userId };
 
     try {
       await axiosPrivate.post('/notes', note);
@@ -45,7 +45,7 @@ const AddNote = () => {
     setText('');
     setColor('#ffffff');
     setShow(false);
-  }
+  };
   // take the text value to pass the set row number func for textarea input form
   // textareaLine(text);
   return (
@@ -59,11 +59,11 @@ const AddNote = () => {
       setTitle={setTitle}
       color={color}
       setColor={setColor}
-      cName={'add-content'}
-      submitName={'Add'}
+      cName="add-content"
+      submitName="Add"
       onCancel={cancelAdd}
     />
   );
-};
+}
 
 export default AddNote;
