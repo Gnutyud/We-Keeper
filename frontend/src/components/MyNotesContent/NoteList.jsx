@@ -5,7 +5,7 @@ import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import AppContext from '../../store/context';
 import NoteItem from './NoteItem';
 
-const NoteList = () => {
+function NoteList() {
   // Update or Edit notes
   const {
     fetchNotes,
@@ -39,7 +39,7 @@ const NoteList = () => {
 
   const handleClick = (note) => {
     onCloseSearchTab();
-    setViewingMode("edit");
+    setViewingMode('edit');
     navigate(`/${note._id}`);
   };
 
@@ -60,11 +60,11 @@ const NoteList = () => {
     }
     return (
       <div className="note-content">
-        {searchNoteResult.map(function (search) {
-          let str = new RegExp(searchInput, 'gmi');
-          let highlightTitle = search.title.replace(str, `<b>${searchInput}</b>`);
-          let highlightText = search.text.replace(str, `<mark>${searchInput}</mark>`);
-          let data = {
+        {searchNoteResult.map((search) => {
+          const str = new RegExp(searchInput, 'gmi');
+          const highlightTitle = search.title.replace(str, `<b>${searchInput}</b>`);
+          const highlightText = search.text.replace(str, `<mark>${searchInput}</mark>`);
+          const data = {
             ...search,
             text: searchInput ? parse(highlightText) : search.text,
             title: searchInput ? parse(highlightTitle) : search.title,
@@ -96,6 +96,6 @@ const NoteList = () => {
       ))}
     </div>
   );
-};
+}
 
 export default NoteList;

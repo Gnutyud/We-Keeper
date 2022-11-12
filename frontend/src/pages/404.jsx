@@ -7,9 +7,7 @@ const PageNotFound = () => {
     height: '100vh',
     overflow: 'hidden',
   };
-  return (
-      <Lottie animationData={NotFound} loop={true} style={styles} />
-  );
+  return <Lottie animationData={NotFound} loop style={styles} />;
 };
 
 export default PageNotFound;

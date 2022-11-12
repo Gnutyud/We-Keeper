@@ -22,9 +22,9 @@ const reducer = (state, action) => {
       };
     }
     case actions.ADD_NOTE_ITEM: {
-      let updatedNotes = [...state.noteData];
-      let existingNoteItemIndex = state.noteData.findIndex((note) => note.id === action.noteItem.id);
-      let existingNoteItem = state.noteData[existingNoteItemIndex];
+      const updatedNotes = [...state.noteData];
+      const existingNoteItemIndex = state.noteData.findIndex((note) => note.id === action.noteItem.id);
+      const existingNoteItem = state.noteData[existingNoteItemIndex];
       if (existingNoteItem) {
         updatedNotes[existingNoteItemIndex] = action.noteItem;
       } else {
@@ -36,7 +36,7 @@ const reducer = (state, action) => {
       };
     }
     case actions.REMOVE_NOTE_ITEM: {
-      let id = action.noteItemId;
+      const id = action.noteItemId;
       const updatedNotes = state.noteData.filter((note) => note.id !== id);
       return {
         ...state,

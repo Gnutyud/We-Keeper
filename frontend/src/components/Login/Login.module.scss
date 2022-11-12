@@ -27,6 +27,7 @@
       text-align: center;
       color: #224957;
       margin-bottom: 15px;
+      margin-top: 0;
     }
     p {
       font-style: normal;
@@ -119,7 +120,7 @@
         }
       }
       button {
-        @include buttonLink()
+        @include buttonLink();
       }
     }
   }
@@ -127,7 +128,7 @@
     margin-top: 20px;
     text-align: center;
     button {
-      @include buttonLink()
+      @include buttonLink();
     }
   }
 }

@@ -7,9 +7,7 @@ const Loading = () => {
     height: '100vh',
     overflow: 'hidden',
   };
-  return (
-      <Lottie animationData={blueLoading} loop={true} style={styles} />
-  );
+  return <Lottie animationData={blueLoading} loop style={styles} />;
 };
 
 export default Loading;

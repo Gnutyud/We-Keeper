@@ -1,16 +1,16 @@
-import { createContext } from "react";
+import { createContext } from 'react';
 
 export const initialState = {
   auth: {},
   noteData: [],
   isSearching: false,
   searchNoteResult: [],
-  searchInput: "",
+  searchInput: '',
   isViewing: false,
   isEdit: false,
-  viewingNote: "",
+  viewingNote: '',
   selectedNote: {},
-  viewingMode: "",
+  viewingMode: '',
 };
 
 const AppContext = createContext({

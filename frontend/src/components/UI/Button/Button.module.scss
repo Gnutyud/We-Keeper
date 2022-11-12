@@ -10,7 +10,30 @@
   border: none;
   outline: none;
   box-shadow: 5px 10px 8px #888888;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
   &:hover {
     opacity: 0.9;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: default;
+  }
+
+  .spinner {
+    animation: spin infinite 1s linear;
+  }
+
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
   }
 }

@@ -1,0 +1,30 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": ["plugin:react/recommended", "airbnb", "prettier"],
+  "overrides": [],
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "plugins": ["react"],
+  "rules": {
+    "react/prop-types": "off",
+    "react/button-has-type": "off",
+    "no-console": "off",
+    "no-param-reassign": [2, { "props": false }],
+    "no-underscore-dangle": "off",
+    "react/function-component-definition": [
+      0,
+      {
+        "namedComponents": "function-declaration",
+        "unnamedComponents": "function-expression"
+      }
+    ]
+  }
+}

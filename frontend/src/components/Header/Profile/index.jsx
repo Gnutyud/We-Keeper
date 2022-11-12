@@ -4,13 +4,13 @@ import { BiEditAlt, BiUser } from 'react-icons/bi';
 import { FiHelpCircle } from 'react-icons/fi';
 import { IoSettingsOutline } from 'react-icons/io5';
 import { MdForwardToInbox } from 'react-icons/md';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import useOnClickOutside from '../../../hooks/useOnClickOutside';
 import appApi from '../../../services/appApi';
 import AppContext from '../../../store/context';
 import classes from './Profile.module.scss';
 
-const Profile = () => {
+function Profile() {
   const [showDropdown, setShowDropdown] = useState(false);
   const ref = useRef();
   useOnClickOutside(ref, () => setShowDropdown(false));
@@ -30,7 +30,13 @@ const Profile = () => {
 
   return (
     <div className={classes.profile} ref={ref}>
-      <div className={classes.avatar} onClick={() => setShowDropdown((prev) => !prev)}>
+      <div
+        role="button"
+        tabIndex={0}
+        className={classes.avatar}
+        onClick={() => setShowDropdown((prev) => !prev)}
+        onKeyDown={() => setShowDropdown((prev) => !prev)}
+      >
         <img src="https://www.w3schools.com/howto/img_avatar2.png" alt="avatar" className="avatarbtn" />
       </div>
       {showDropdown && (
@@ -42,35 +48,35 @@ const Profile = () => {
           <ul className={classes['info-menu']}>
             <li>
               <BiUser />
-              <a href="#">My Profile</a>
+              <Link to="/">My Profile</Link>
             </li>
             <li>
               <BiEditAlt />
-              <a href="#">Edit Profile</a>
+              <Link to="/">Edit Profile</Link>
             </li>
             <li>
               <MdForwardToInbox />
-              <a href="#">Inbox</a>
+              <Link to="/admin">Admin Page</Link>
             </li>
             <li>
               <IoSettingsOutline />
-              <a href="#">Settings</a>
+              <Link to="/">Settings</Link>
             </li>
             <li>
               <FiHelpCircle />
-              <a href="#">Help</a>
+              <Link to="/">Help</Link>
             </li>
             <li>
               <AiOutlineLogout />
-              <a href="#" onClick={handleLogout}>
+              <Link to="/login" onClick={handleLogout}>
                 Logout
-              </a>
+              </Link>
             </li>
           </ul>
         </div>
       )}
     </div>
   );
-};
+}
 
 export default Profile;
