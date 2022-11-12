@@ -1,5 +1,10 @@
+@mixin random-bgr(){
+  background-color: rgb(random(255), random(255), random(255));
+}
+
 .profile {
   position: relative;
+  z-index: 10;
   ul {
     list-style-type: none;
     padding: 0;
@@ -11,6 +16,11 @@
     border-radius: 50%;
     overflow: hidden;
     cursor: pointer;
+    color: #fff;
+    @include random-bgr();
+    display: flex;
+    justify-content: center;
+    align-items: center;
     img {
       position: absolute;
       object-fit: cover;
@@ -31,7 +41,7 @@
     }
   }
   .info {
-    padding: 15px;
+    padding: 20px 15px;
     background-color: white;
     border-radius: 15px;
     position: absolute;
@@ -56,18 +66,17 @@
     }
 
     .name {
-      h3 {
-        font-size: 18px;
-        width: 100%;
-        padding: 15px 0;
-        font-weight: 500;
-        color: blue;
-        text-align: center;
-        line-height: 1.4;
-        margin: 0;
-        padding: 0;
-      }
+      font-size: 18px;
+      width: 100%;
+      padding: 15px 0;
+      font-weight: 500;
+      color: blue;
+      text-align: center;
+      line-height: 1.4;
+      margin: 0;
+      padding: 0;
       .desc {
+        display: inline-block;
         font-size: 14px;
         color: #964ec2;
         font-style: italic;
@@ -75,37 +84,40 @@
       }
     }
 
-    .info-menu li {
-      border-top: 1px solid #cecece;
-      padding: 5px 0;
-      display: flex;
-      align-items: center;
-      &:hover {
+    .info-menu {
+      margin-bottom: 0;
+      li {
+        border-top: 1px solid #cecece;
+        padding: 5px 0;
+        display: flex;
+        align-items: center;
+        &:hover {
+          i {
+            opacity: 1;
+          }
+          a {
+            color: red;
+            transform: translateX(5px);
+          }
+          svg {
+            color: red;
+          }
+        }
         i {
-          opacity: 1;
+          font-size: 20px;
+          opacity: 0.5;
+          transition: 0.5s;
+          color: blue;
         }
         a {
-          color: red;
-          transform: translateX(5px);
+          text-decoration: none;
+          color: black;
+          font-size: 16px;
+          margin-left: 15px;
+          transition: 0.3s linear;
+          transform: translateX(0);
+          display: inline-block;
         }
-        svg {
-          color: red;
-        }
-      }
-      i {
-        font-size: 20px;
-        opacity: 0.5;
-        transition: 0.5s;
-        color: blue;
-      }
-      a {
-        text-decoration: none;
-        color: black;
-        font-size: 16px;
-        margin-left: 15px;
-        transition: 0.3s linear;
-        transform: translateX(0);
-        display: inline-block;
       }
     }
   }

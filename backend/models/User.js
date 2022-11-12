@@ -9,17 +9,21 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  roles: [{
+  roles: {
     type: String,
     default: 'user'
-  }],
-  active: {
-    type: Boolean,
-    default: true
+  },
+  status: {
+    type: String,
+    default: ""
   },
   email: {
     type: String,
     required: true
+  },
+  avatar: {
+    type: String,
+    default: ""
   }
 });
 

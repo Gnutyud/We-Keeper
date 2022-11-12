@@ -4,7 +4,7 @@ import NoteBox from './NoteBox';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
 function AddNote() {
-  const { fetchNotes, auth } = useContext(AppContext);
+  const { setNoteList, auth } = useContext(AppContext);
   const [title, setTitle] = useState('');
   const [text, setText] = useState('');
   const [color, setColor] = useState('');
@@ -12,12 +12,12 @@ function AddNote() {
   const axiosPrivate = useAxiosPrivate();
 
   const addNote = async () => {
-    const note = { title, text, color, userId: auth?.userId };
+    const note = { title, text, color, userId: auth?.userInfo?.userId };
 
     try {
       await axiosPrivate.post('/notes', note);
-      const response = await axiosPrivate.get(`/notes/${auth?.userId}`);
-      fetchNotes(response);
+      const response = await axiosPrivate.get(`/notes/${auth?.userInfo?.userId}`);
+      setNoteList(response);
     } catch (err) {
       console.error(err);
     }

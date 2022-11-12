@@ -10,9 +10,9 @@ function MyNotes() {
   // get notes
   useEffect(() => {
     const getNotes = async () => {
-      if(auth?.userId) {
+      if(auth?.userInfo?.userId) {
         try {
-          const response = await axiosPrivate.get(`/notes/${auth?.userId}`);
+          const response = await axiosPrivate.get(`/notes/${auth?.userInfo?.userId}`);
           setNoteList(response);
         } catch (error) {
           console.error(error);

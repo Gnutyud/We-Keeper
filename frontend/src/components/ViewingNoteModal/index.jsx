@@ -9,7 +9,7 @@ import NoteBox from '../MyNotesContent/NoteBox';
 function ViewingNoteModal() {
   // Update or Edit notes
   const {
-    fetchNotes,
+    setNoteList,
     auth,
     viewingMode,
     setSearchInput,
@@ -24,15 +24,15 @@ function ViewingNoteModal() {
 
   const updatedNote = async () => {
     await axiosPrivate.patch('/notes', { ...updateNote, id: updateNote._id });
-    const response = await axiosPrivate.get(`/notes/${auth?.userId}`);
-    fetchNotes(response);
+    const response = await axiosPrivate.get(`/notes/${auth?.userInfo?.userId}`);
+    setNoteList(response);
   };
 
   const deleteNote = async (id) => {
     try {
       await axiosPrivate.delete(`/notes/${id}`);
-      const response = await axiosPrivate.get(`/notes/${auth?.userId}`);
-      fetchNotes(response);
+      const response = await axiosPrivate.get(`/notes/${auth?.userInfo?.userId}`);
+      setNoteList(response);
     } catch (error) {
       console.log(error);
     }
@@ -67,7 +67,7 @@ function ViewingNoteModal() {
           setColor={(updateColor) => setUpdateNote((prev) => ({ ...prev, color: updateColor }))}
           cName="add-content edit-form"
           submitName="Update"
-          onCancel={() => setViewingMode('view')}
+          onCancel={() => turnOffViewingMode()}
         />
       </Modal>
     );

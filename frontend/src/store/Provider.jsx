@@ -12,19 +12,10 @@ const Provider = ({ children }) => {
       isSearching: state.isSearching,
       searchNoteResult: state.searchNoteResult,
       searchInput: state.searchInput,
-      isViewing: state.isViewing,
-      isEdit: state.isEdit,
-      viewingNote: state.viewingNote,
       selectedNote: state.selectedNote,
       viewingMode: state.viewingMode,
       setAuth: (authData) => {
         dispatch({ type: actions.SET_AUTH, authData });
-      },
-      addNoteItem: (noteItem) => {
-        dispatch({ type: actions.ADD_NOTE_ITEM, noteItem });
-      },
-      removeNoteItem: (noteItemId) => {
-        dispatch({ type: actions.REMOVE_NOTE_ITEM, noteItemId });
       },
       setNoteList: (noteData) => {
         dispatch({ type: actions.SET_NOTE_LIST, noteData });
