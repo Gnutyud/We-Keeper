@@ -6,9 +6,6 @@ export const initialState = {
   isSearching: false,
   searchNoteResult: [],
   searchInput: '',
-  isViewing: false,
-  isEdit: false,
-  viewingNote: '',
   selectedNote: {},
   viewingMode: '',
 };

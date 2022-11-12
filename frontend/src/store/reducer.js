@@ -1,7 +1,5 @@
 export const actions = {
   SET_AUTH: 'SET_AUTH',
-  ADD_NOTE_ITEM: 'ADD_NOTE_ITEM',
-  REMOVE_NOTE_ITEM: 'REMOVE_NOTE_ITEM',
   TURN_ON_SEARCHING_MODE: 'TURN_ON_SEARCHING_MODE',
   TURN_OFF_SEARCHING_MODE: 'TURN_OFF_SEARCHING_MODE',
   SET_VIEWING_MODE: 'SET_VIEWING_MODE',
@@ -19,30 +17,6 @@ const reducer = (state, action) => {
       return {
         ...state,
         auth: action.authData,
-      };
-    }
-    case actions.ADD_NOTE_ITEM: {
-      const updatedNotes = [...state.noteData];
-      const existingNoteItemIndex = state.noteData.findIndex((note) => note.id === action.noteItem.id);
-      const existingNoteItem = state.noteData[existingNoteItemIndex];
-      if (existingNoteItem) {
-        updatedNotes[existingNoteItemIndex] = action.noteItem;
-      } else {
-        updatedNotes.push(action.noteItem);
-      }
-      return {
-        ...state,
-        noteData: updatedNotes,
-      };
-    }
-    case actions.REMOVE_NOTE_ITEM: {
-      const id = action.noteItemId;
-      const updatedNotes = state.noteData.filter((note) => note.id !== id);
-      return {
-        ...state,
-        noteData: updatedNotes,
-        isViewing: false,
-        viewingNote: '',
       };
     }
     case actions.SET_NOTE_LIST: {
@@ -94,7 +68,6 @@ const reducer = (state, action) => {
       return {
         ...state,
         selectedNote: action.noteData,
-        isViewing: true,
         viewingMode: 'view',
       };
     }

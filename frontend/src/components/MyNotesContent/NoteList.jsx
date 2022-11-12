@@ -8,7 +8,7 @@ import NoteItem from './NoteItem';
 function NoteList() {
   // Update or Edit notes
   const {
-    fetchNotes,
+    setNoteList,
     auth,
     noteData,
     isSearching,
@@ -25,8 +25,8 @@ function NoteList() {
   const deleteNote = async (id) => {
     try {
       await axiosPrivate.delete(`/notes/${id}`);
-      const response = await axiosPrivate.get(`/notes/${auth?.userId}`);
-      fetchNotes(response);
+      const response = await axiosPrivate.get(`/notes/${auth?.userInfo?.userId}`);
+      setNoteList(response);
     } catch (error) {
       console.log(error);
     }
@@ -38,6 +38,7 @@ function NoteList() {
   };
 
   const handleClick = (note) => {
+    setSelectedNote(note);
     onCloseSearchTab();
     setViewingMode('edit');
     navigate(`/${note._id}`);

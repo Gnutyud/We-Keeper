@@ -14,8 +14,11 @@ function Profile() {
   const [showDropdown, setShowDropdown] = useState(false);
   const ref = useRef();
   useOnClickOutside(ref, () => setShowDropdown(false));
-  const { logout, setNoteList } = useContext(AppContext);
+  const { logout, setNoteList, auth } = useContext(AppContext);
   const navigate = useNavigate();
+  const avatar = auth?.userInfo?.avatar;
+  const username = auth?.userInfo?.username;
+  const status = auth?.userInfo?.status;
 
   const handleLogout = async () => {
     try {
@@ -37,13 +40,14 @@ function Profile() {
         onClick={() => setShowDropdown((prev) => !prev)}
         onKeyDown={() => setShowDropdown((prev) => !prev)}
       >
-        <img src="https://www.w3schools.com/howto/img_avatar2.png" alt="avatar" className="avatarbtn" />
+        {avatar && <img src={avatar} alt="avatar" />}
+        {!avatar && username?.charAt(0)?.toUpperCase()}
       </div>
       {showDropdown && (
         <div className={classes.info}>
           <h3 className={classes.name}>
-            <h3>Nguyen Van A</h3>
-            <span className={classes.desc}>dadadad adadada adadada</span>
+            {username}
+            <span className={classes.desc}>{ status }</span>
           </h3>
           <ul className={classes['info-menu']}>
             <li>

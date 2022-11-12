@@ -88,7 +88,7 @@ function NoteBox({
             {submitName}
           </button>
           <button
-            type="text"
+            type="button"
             className="btn-close"
             onClick={onCancel}
             style={{ backgroundColor: color, borderColor: color }}

@@ -13,7 +13,7 @@ const login = asyncHandler(async (req, res) => {
 
   const foundUser = await User.findOne({ username }).exec();
 
-  if (!foundUser || !foundUser.active) {
+  if (!foundUser) {
     return res.status(401).json({ message: "Incorrect username. Please try again." });
   }
 
@@ -34,7 +34,15 @@ const login = asyncHandler(async (req, res) => {
     maxAge: 7 * 24 * 60 * 60 * 1000, //cookie expiry: set to match rT
   });
 
-  res.json({ accessToken, userId: foundUser._id });
+  let userInfo = {
+    username: foundUser.username,
+    userId: foundUser._id,
+    avatar: foundUser.avatar,
+    status: foundUser.status,
+    roles: foundUser.roles
+  }
+
+  res.json({ accessToken, userInfo });
 });
 
 // @desc Refresh
@@ -62,7 +70,15 @@ const refresh = async (req, res) => {
 
     const accessToken = await createToken(foundUser);
 
-    res.json({ accessToken, userId: foundUser._id });
+    let userInfo = {
+      username: foundUser.username,
+      userId: foundUser._id,
+      avatar: foundUser.avatar,
+      status: foundUser.status,
+      roles: foundUser.roles
+    }
+
+    res.json({ accessToken, userInfo });
   } catch (error) {
     return res.status(403).json({
       errors: { body: ["Forbidden", error.message] },
