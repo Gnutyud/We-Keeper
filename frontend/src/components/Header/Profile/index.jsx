@@ -47,7 +47,7 @@ function Profile() {
         <div className={classes.info}>
           <h3 className={classes.name}>
             {username}
-            <span className={classes.desc}>{ status }</span>
+            <span className={classes.desc}>{status}</span>
           </h3>
           <ul className={classes['info-menu']}>
             <li>
