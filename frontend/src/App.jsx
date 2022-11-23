@@ -7,6 +7,7 @@ import ViewingNoteModal from './components/ViewingNoteModal';
 import PageNotFound from './pages/404';
 import Admin from './pages/Admin';
 import MyNotes from './pages/MyNotes';
+import MyProfile from './pages/MyProfile';
 
 function App() {
   return (
@@ -14,6 +15,9 @@ function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/admin" element={<Admin />} />
+      <Route path="/my-profile" element={<PrivateRoute />}>
+        <Route index element={<MyProfile />} />
+      </Route>
       <Route path="/" element={<PrivateRoute />}>
         <Route index element={<MyNotes />} />
         <Route path=":id" element={<ViewingNoteModal />} />

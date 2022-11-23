@@ -10,7 +10,7 @@ function MyNotes() {
   // get notes
   useEffect(() => {
     const getNotes = async () => {
-      if(auth?.userInfo?.userId) {
+      if (auth?.userInfo?.userId) {
         try {
           const response = await axiosPrivate.get(`/notes/${auth?.userInfo?.userId}`);
           setNoteList(response);

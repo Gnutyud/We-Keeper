@@ -1,4 +1,4 @@
-@mixin random-bgr(){
+@mixin random-bgr() {
   background-color: rgb(random(255), random(255), random(255));
 }
 

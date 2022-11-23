@@ -1,0 +1,95 @@
+@import '../../assets//styles/global';
+
+.myProfile {
+  .myProfileHeader {
+    border-bottom: 1px solid $gray-1;
+    button {
+      @include buttonLink;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      padding: 5px 10px;
+      margin: 10px;
+      border-radius: 5px;
+      &:hover {
+        background-color: $gray-1;
+      }
+    }
+  }
+  .myProfileContent {
+    display: flex;
+    padding: 15px;
+    gap: 50px;
+    .verticalTabs {
+      width: 20%;
+      padding: 0;
+      padding-left: 20px;
+      list-style: none;
+      li {
+        position: relative;
+        padding: 8px 0;
+        padding-left: 15px;
+        margin-bottom: 5px;
+        button {
+          @include buttonLink;
+        }
+        &.active {
+          color: $primary-color;
+          background-color: $gray-1;
+          button {
+            font-weight: 500;
+          }
+          &::before {
+            content: '';
+            height: 100%;
+            width: 2px;
+            background-color: $primary-color;
+            position: absolute;
+            top: 0;
+            left: 0;
+          }
+        }
+      }
+    }
+    .content {
+      width: 50%;
+      .title {
+        color: $primary-color;
+      }
+      .fieldLabel {
+        font-size: 16px;
+        color: $primary-color;
+        font-weight: 700;
+      }
+
+      .avatar {
+        margin-bottom: 15px;
+        .avatarImage {
+          width: 150px;
+          height: 150px;
+          border-radius: 50%;
+          @include random-bgr();
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 55px;
+          font-weight: 700;
+          color: $white;
+        }
+        img {
+          width: 100%;
+          object-fit: cover;
+        }
+      }
+      .dangrousZone {
+        margin-top: 40px;
+
+        .deleteAccount {
+          @include buttonLink;
+          color: $red;
+        }
+      }
+    }
+  }
+}
