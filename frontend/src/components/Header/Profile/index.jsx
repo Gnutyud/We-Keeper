@@ -52,7 +52,7 @@ function Profile() {
           <ul className={classes['info-menu']}>
             <li>
               <BiUser />
-              <Link to="/">My Profile</Link>
+              <Link to="/my-profile">My Profile</Link>
             </li>
             <li>
               <BiEditAlt />
