@@ -25,6 +25,7 @@
         "namedComponents": "function-declaration",
         "unnamedComponents": "function-expression"
       }
-    ]
+    ],
+    "react/jsx-props-no-spreading": "off"
   }
 }

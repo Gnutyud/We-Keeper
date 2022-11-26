@@ -1,0 +1,42 @@
+@import '../../assets//styles/global';
+
+.profile {
+  .title {
+    color: $primary-color;
+    margin-bottom: 30px;
+  }
+  .fieldLabel {
+    font-size: 16px;
+    color: $primary-color;
+    font-weight: 700;
+  }
+
+  .avatar {
+    margin-bottom: 20px;
+    .avatarImage {
+      margin-top: 5px;
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      @include random-bgr();
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 55px;
+      font-weight: 700;
+      color: $white;
+    }
+    img {
+      width: 100%;
+      object-fit: cover;
+    }
+  }
+  .dangrousZone {
+    margin-top: 40px;
+
+    .deleteAccount {
+      @include buttonLink;
+      color: $red;
+    }
+  }
+}
