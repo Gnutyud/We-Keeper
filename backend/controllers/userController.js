@@ -1,18 +1,18 @@
-const User = require('../models/User');
-const Note = require('../models/Note');
-const asyncHandler = require('express-async-handler');
-const { hashPassword } = require('../helper/password');
+const User = require("../models/User");
+const Note = require("../models/Note");
+const asyncHandler = require("express-async-handler");
+const { hashPassword } = require("../helper/password");
 
 // @desc Get all users
 // @route Get /users
 // @access Private
 const getAllUsers = asyncHandler(async (req, res) => {
-  const users = await User.find().select('-password').lean();
+  const users = await User.find().select("-password").lean();
   if (!users?.length) {
-    return res.status(400).json({ message: "No users found!" })
+    return res.status(400).json({ message: "No users found!" });
   }
   return res.status(200).json(users);
-})
+});
 
 // @desc Update a user
 // @route PATCH /users
@@ -20,16 +20,18 @@ const getAllUsers = asyncHandler(async (req, res) => {
 const getUser = asyncHandler(async (req, res) => {
   const { userId } = req.params;
   // confirm data
-  if (!userId) return res.status(400).json({ message: 'userId is required' })
+  if (!userId) return res.status(400).json({ message: "userId is required" });
 
-  const user = await User.findById(userId).select('-password').exec();
+  const user = await User.findById(userId).select("-password").exec();
 
   if (!user) {
-    return res.status(400).json({ message: 'User not found!' })
+    return res.status(400).json({ message: "User not found!" });
   }
 
-  return res.status(200).json(user);
-})
+  const notes = await Note.find({ userId });
+
+  return res.status(200).json({ data: user, totalNotes: notes?.length });
+});
 
 // @desc Create new user
 // @route POST /users
@@ -38,7 +40,7 @@ const createNewUser = asyncHandler(async (req, res) => {
   const { username, password, roles, email } = req.body;
   //  check input data
   if (!username || !password || !email) {
-    return res.status(400).json({ message: 'All Fields are required!' });
+    return res.status(400).json({ message: "All Fields are required!" });
   }
   // check duplicate
   const duplicate = await User.findOne({ username }).lean().exec();
@@ -52,16 +54,16 @@ const createNewUser = asyncHandler(async (req, res) => {
   // hash password
   const hashPwd = await hashPassword(password);
 
-  const userObject = { username, "password": hashPwd, email };
-  if (roles) userObject = { ...userObject, roles: [roles] }
+  const userObject = { username, password: hashPwd, email };
+  if (roles) userObject = { ...userObject, roles: [roles] };
   // Create and store new user
   const user = await User.create(userObject);
   if (user) {
-    res.status(200).json({ message: `New user ${username} created` })
+    res.status(200).json({ message: `New user ${username} created` });
   } else {
-    res.status(400).json({ message: 'Invalid user data received' })
+    res.status(400).json({ message: "Invalid user data received" });
   }
-})
+});
 
 // @desc Update a user
 // @route PATCH /users
@@ -70,13 +72,13 @@ const updateUser = asyncHandler(async (req, res) => {
   const { username, password, roles, id, active } = req.body;
   // confirm data
   if (!username || !id || !Array.isArray(roles) || !roles.length || typeof active !== "boolean") {
-    return res.status(400).json({ message: 'All fields are required!' })
+    return res.status(400).json({ message: "All fields are required!" });
   }
 
   const user = await User.findById(id).exec();
 
   if (!user) {
-    return res.status(400).json({ message: 'User not found!' })
+    return res.status(400).json({ message: "User not found!" });
   }
 
   // check duplicate
@@ -95,8 +97,8 @@ const updateUser = asyncHandler(async (req, res) => {
   }
 
   const updateUser = await user.save();
-  res.status(200).json({ message: 'updated user' });
-})
+  res.status(200).json({ message: "updated user" });
+});
 
 // @desc Delete a user
 // @route DELETE /users
@@ -105,23 +107,21 @@ const deleteUser = asyncHandler(async (req, res) => {
   const { id } = req.body;
 
   if (!id) {
-    return res.status(400).json({ message: 'User ID is required!' })
+    return res.status(400).json({ message: "User ID is required!" });
   }
 
-  const note = await Note.findOne({ user: id }).lean().exec();
-  if (note) {
-    return res.status(400).json({ message: 'User has assigned notes' })
-  }
+  // delete all notes created by this user
+  await Note.remove({ userId: id });
 
   const user = await User.findById(id).exec();
 
   if (!user) {
-    return res.status(400).json({ message: 'User not found' })
+    return res.status(400).json({ message: "User not found" });
   }
 
   const result = await user.deleteOne();
 
-  res.status(200).json({ message: `Username ${result.username} with ID ${result._id} deleted!` })
-})
+  res.status(200).json({ message: `Username ${result.username} with ID ${result._id} deleted!` });
+});
 
 module.exports = { getAllUsers, getUser, createNewUser, updateUser, deleteUser };

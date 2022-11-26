@@ -58,7 +58,7 @@ function AdminTable(props) {
   const [sortColumn, setSortColumn] = React.useState();
   const [sortType, setSortType] = React.useState();
   const [loading, setLoading] = React.useState(false);
-//   const [checkedKeys, setCheckedKeys] = React.useState([]);
+  //   const [checkedKeys, setCheckedKeys] = React.useState([]);
   let checked = false;
   let indeterminate = false;
 

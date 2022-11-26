@@ -5,7 +5,7 @@ const { authByToken } = require('../middleware/auth');
 
 router.route('/')
   .get(authByToken, userController.getAllUsers)
-  .post(authByToken, userController.createNewUser)
+  .post(userController.createNewUser)
   .patch(authByToken, userController.updateUser)
   .delete(authByToken, userController.deleteUser);
 
