@@ -1,6 +1,6 @@
 import moment from 'moment';
 import React, { useContext, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import AppContext from '../../store/context';
 import TextInput from '../UI/TextInput';
@@ -12,12 +12,13 @@ const MyProfile = () => {
   const { auth } = useContext(AppContext);
   const navigate = useNavigate();
   const { data, totalNotes } = profileData;
+  const { userId } = useParams();
 
   useEffect(() => {
     const getProfile = async () => {
-      if (auth?.userInfo?.userId) {
+      if (userId || auth?.userInfo?.userId) {
         try {
-          const response = await axiosPrivate.get(`/users/${auth?.userInfo?.userId}`);
+          const response = await axiosPrivate.get(`/users/${userId || auth?.userInfo?.userId}`);
           setProfileData(response);
         } catch (error) {
           console.error(error);
@@ -29,9 +30,13 @@ const MyProfile = () => {
   }, []);
   const handleDeleteAccount = async () => {
     try {
-      if (auth?.userInfo?.userId) {
-        await axiosPrivate.delete('/users', { data: { id: auth?.userInfo?.userId } });
-        navigate('/login');
+      if (userId || auth?.userInfo?.userId) {
+        await axiosPrivate.delete('/users', { data: { id: userId || auth?.userInfo?.userId } });
+        if (userId) {
+          navigate('/admin');
+        } else {
+          navigate('/login');
+        }
       }
     } catch (error) {
       console.log(error);
@@ -59,11 +64,11 @@ const MyProfile = () => {
       <TextInput fieldName="Username" id="username" placeholder={data?.username} disabled />
       <TextInput fieldName="Total Notes" id="totalNotes" placeholder={totalNotes} disabled />
       <div className={styles.dangrousZone}>
-        <p className={styles.fieldLabel}>Delete your account</p>
+        <p className={styles.fieldLabel}>Delete {userId ? 'this' : 'your'} account</p>
         <p>
           it is possible to
           <button className={styles.deleteAccount} onClick={handleDeleteAccount}>
-            delete your account
+            delete {userId ? 'this' : 'your'} account
           </button>
           , but it is irreversible. Please be sure that you would like to do that.
         </p>

@@ -11,7 +11,14 @@ const getAllUsers = asyncHandler(async (req, res) => {
   if (!users?.length) {
     return res.status(400).json({ message: "No users found!" });
   }
-  return res.status(200).json(users);
+
+  // Add total notes to each user before sending the response 
+  const userWithNotes = await Promise.all(users.map(async (user) => {
+    const notes = await Note.find({ userId: user._id }).lean().exec();
+    return { ...user, totalNotes: notes?.length }
+  }))
+
+  return res.status(200).json(userWithNotes);
 });
 
 // @desc Update a user

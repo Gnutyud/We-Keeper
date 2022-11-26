@@ -5,7 +5,7 @@ import Login from './components/Login';
 import Register from './components/Register';
 import ViewingNoteModal from './components/ViewingNoteModal';
 import PageNotFound from './pages/404';
-import Admin from './pages/Admin';
+import AdminPage from './pages/AdminPage';
 import MyNotes from './pages/MyNotes';
 import MyProfilePage from './pages/MyProfilePage';
 import MySetting from './components/MySetting';
@@ -16,10 +16,28 @@ function App() {
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
-      <Route path="/admin" element={<Admin />} />
+      <Route path="/admin" element={<PrivateRoute />}>
+        <Route
+          index
+          element={
+            <Layout>
+              <AdminPage />
+            </Layout>
+          }
+        />
+      </Route>
       <Route path="/my-profile" element={<PrivateRoute />}>
         <Route
           index
+          // path=':userId'
+          element={
+            <Layout>
+              <MyProfilePage />
+            </Layout>
+          }
+        />
+        <Route
+          path=":userId"
           element={
             <Layout>
               <MyProfilePage />
