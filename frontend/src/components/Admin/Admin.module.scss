@@ -1,0 +1,16 @@
+@import '../../assets/styles/global';
+
+.admin {
+  .title {
+    color: $primary-color;
+    margin-bottom: 15px;
+  }
+
+  .buttonGroup {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+  }
+}

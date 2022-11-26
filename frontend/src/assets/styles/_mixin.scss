@@ -5,6 +5,9 @@
   color: #224957;
   cursor: pointer;
   font-family: inherit;
+  &:hover {
+    color: blue;
+  }
 }
 
 @mixin random-bgr() {

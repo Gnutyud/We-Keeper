@@ -1,0 +1,12 @@
+@import '../../assets/styles/mixin';
+
+.renderMenu {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+
+  button {
+    @include buttonLink;
+  }
+}

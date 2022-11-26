@@ -6,6 +6,7 @@ import styles from './Layout.module.scss';
 const TABS = [
   { id: 0, name: 'My Profile', path: '/my-profile' },
   { id: 1, name: 'My Settings', path: '/my-setting' },
+  { id: 2, name: 'User Management (Admin)', path: '/admin' },
 ];
 
 const SideBarItem = ({ item }) => {
@@ -25,7 +26,7 @@ const Layout = ({ children }) => {
       <div className={styles.layoutHeader}>
         <button onClick={() => navigate('/')}>
           <TfiBackLeft />
-          Back
+          Home
         </button>
       </div>
       <div className={styles.layoutContent}>

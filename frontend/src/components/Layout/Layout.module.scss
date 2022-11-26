@@ -1,7 +1,12 @@
 @import '../../assets/styles/global';
 
 .layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
   .layoutHeader {
+    flex: 0 0 50px;
     border-bottom: 1px solid $gray-1;
     button {
       @include buttonLink;
@@ -19,11 +24,12 @@
   }
   .layoutContent {
     display: flex;
-    padding: 15px;
+    height: calc(100vh - 50px);
+    // margin-top: 15px;
     gap: 50px;
     .sidebar {
-      width: 20%;
-      padding: 0;
+      padding: 15px 0;
+      flex-basis: 15rem;
       padding-left: 20px;
       list-style: none;
       li {
@@ -54,7 +60,9 @@
       }
     }
     .content {
-      width: 50%;
+      flex: 1;
+      overflow: auto;
+      padding: 15px 30px 30px 0;
     }
   }
 }

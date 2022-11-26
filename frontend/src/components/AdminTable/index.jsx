@@ -1,7 +1,9 @@
 import React from 'react';
 import { IoIosMore } from 'react-icons/io';
+import { useNavigate } from 'react-router-dom';
 import { Checkbox, IconButton, Popover, Table, Whisper } from 'rsuite';
 import 'rsuite/dist/rsuite.min.css';
+import styles from './AdminTable.module.scss';
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -37,21 +39,29 @@ const CheckCell = ({ rowData, onChange, checkedKeys, dataKey, ...props }) => (
   </Cell>
 );
 
-const speaker = (
-  <Popover title="Title">
-    <p>This is a default Popover </p>
-    <p>Content</p>
-    <p>link</p>
-  </Popover>
-);
+const ActionCell = ({ rowData, dataKey, ...props }) => {
+  const navigate = useNavigate();
 
-const ActionCell = ({ rowData, dataKey, ...props }) => (
-  <Cell {...props} className="link-group">
-    <Whisper placement="autoVerticalStart" trigger="click" speaker={speaker}>
-      <IconButton appearance="subtle" icon={<IoIosMore />} />
-    </Whisper>
-  </Cell>
-);
+  return (
+    <Cell {...props} className="link-group">
+      <Whisper
+        placement="autoVerticalStart"
+        trigger="click"
+        speaker={
+          <Popover>
+            <div className={styles.renderMenu}>
+              <button onClick={() => navigate(`/my-profile/${rowData.id}`)}>View Profile</button>
+              <button>Edit</button>
+              <button>Delete</button>
+            </div>
+          </Popover>
+        }
+      >
+        <IconButton appearance="subtle" icon={<IoIosMore />} />
+      </Whisper>
+    </Cell>
+  );
+};
 
 function AdminTable(props) {
   const { data, checkedKeys, setCheckedKeys } = props;
@@ -108,9 +118,10 @@ function AdminTable(props) {
       setSortType(sortTypes);
     }, 500);
   };
+
   return (
     <Table
-      height={600}
+      height={420}
       data={getData()}
       fillHeight
       sortColumn={sortColumn}
@@ -126,27 +137,31 @@ function AdminTable(props) {
         </HeaderCell>
         <CheckCell dataKey="id" checkedKeys={checkedKeys} onChange={handleCheck} />
       </Column>
-      <Column width={80} align="center">
+      <Column width={75} align="center">
         <HeaderCell>Avartar</HeaderCell>
         <ImageCell dataKey="avartar" />
       </Column>
-      <Column width={230} fixed sortable>
+      <Column flexGrow={1} fixed sortable>
         <HeaderCell>Username</HeaderCell>
         <Cell dataKey="username" />
       </Column>
-      <Column width={400} sortable>
-        <HeaderCell>Status</HeaderCell>
-        <Cell dataKey="status" />
+      <Column width={100} sortable>
+        <HeaderCell>Notes</HeaderCell>
+        <Cell dataKey="totalNotes" />
       </Column>
-      <Column width={200} sortable>
-        <HeaderCell>Role</HeaderCell>
-        <Cell dataKey="roles" />
-      </Column>
-      <Column sortable flexGrow={1}>
+      <Column sortable flexGrow={1.5}>
         <HeaderCell>Email</HeaderCell>
         <Cell dataKey="email" />
       </Column>
-      <Column width={120}>
+      <Column flexGrow={1} sortable>
+        <HeaderCell>Role</HeaderCell>
+        <Cell dataKey="roles" />
+      </Column>
+      <Column flexGrow={1.5} sortable>
+        <HeaderCell>Status</HeaderCell>
+        <Cell dataKey="status" />
+      </Column>
+      <Column flexGrow={1}>
         <HeaderCell>{/* <IoIosMore /> */}</HeaderCell>
         <ActionCell dataKey="id" />
       </Column>
