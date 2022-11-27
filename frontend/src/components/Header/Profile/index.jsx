@@ -1,9 +1,10 @@
+import moment from 'moment';
 import React, { useContext, useRef, useState } from 'react';
 import { AiOutlineLogout } from 'react-icons/ai';
 import { BiEditAlt, BiUser } from 'react-icons/bi';
 import { FiHelpCircle } from 'react-icons/fi';
 import { IoSettingsOutline } from 'react-icons/io5';
-import { MdForwardToInbox } from 'react-icons/md';
+import { RiAdminLine } from 'react-icons/ri';
 import { Link, useNavigate } from 'react-router-dom';
 import useOnClickOutside from '../../../hooks/useOnClickOutside';
 import appApi from '../../../services/appApi';
@@ -18,7 +19,8 @@ function Profile() {
   const navigate = useNavigate();
   const avatar = auth?.userInfo?.avatar;
   const username = auth?.userInfo?.username;
-  const status = auth?.userInfo?.status;
+  const role = auth?.userInfo?.roles;
+  const joinDate = auth?.userInfo?.joinDate;
 
   const handleLogout = async () => {
     try {
@@ -47,7 +49,7 @@ function Profile() {
         <div className={classes.info}>
           <h3 className={classes.name}>
             {username}
-            <span className={classes.desc}>{status}</span>
+            <p className={classes.joinDate}>join date: {moment(joinDate).add(10, 'days').calendar()}</p>
           </h3>
           <ul className={classes['info-menu']}>
             <li>
@@ -58,13 +60,15 @@ function Profile() {
               <BiEditAlt />
               <Link to="/">Edit Profile</Link>
             </li>
-            <li>
-              <MdForwardToInbox />
-              <Link to="/admin">Admin Page</Link>
-            </li>
+            {role === 'admin' && (
+              <li>
+                <RiAdminLine />
+                <Link to="/admin">Admin Page</Link>
+              </li>
+            )}
             <li>
               <IoSettingsOutline />
-              <Link to="/">Settings</Link>
+              <Link to="/my-setting">Settings</Link>
             </li>
             <li>
               <FiHelpCircle />
