@@ -39,7 +39,8 @@ const login = asyncHandler(async (req, res) => {
     userId: foundUser._id,
     avatar: foundUser.avatar,
     status: foundUser.status,
-    roles: foundUser.roles
+    roles: foundUser.roles,
+    joinDate: foundUser.createdAt
   }
 
   res.json({ accessToken, userInfo });
@@ -75,7 +76,8 @@ const refresh = async (req, res) => {
       userId: foundUser._id,
       avatar: foundUser.avatar,
       status: foundUser.status,
-      roles: foundUser.roles
+      roles: foundUser.roles,
+      joinDate: foundUser.createdAt
     }
 
     res.json({ accessToken, userInfo });

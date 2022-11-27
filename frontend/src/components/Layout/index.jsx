@@ -1,12 +1,13 @@
 import React from 'react';
 import { TfiBackLeft } from 'react-icons/tfi';
 import { NavLink, useMatch, useNavigate, useResolvedPath } from 'react-router-dom';
+import AppContext from '../../store/context';
 import styles from './Layout.module.scss';
 
 const TABS = [
-  { id: 0, name: 'My Profile', path: '/my-profile' },
-  { id: 1, name: 'My Settings', path: '/my-setting' },
-  { id: 2, name: 'User Management (Admin)', path: '/admin' },
+  { id: 0, name: 'My Profile', path: '/my-profile', isPrivate: false },
+  { id: 1, name: 'My Settings', path: '/my-setting', isPrivate: false },
+  { id: 2, name: 'User Management (Admin)', path: '/admin', isPrivate: true },
 ];
 
 const SideBarItem = ({ item }) => {
@@ -21,6 +22,9 @@ const SideBarItem = ({ item }) => {
 
 const Layout = ({ children }) => {
   const navigate = useNavigate();
+  const { auth } = React.useContext(AppContext);
+  const isAdmin = auth?.userInfo?.roles === 'admin';
+
   return (
     <div className={styles.layout}>
       <div className={styles.layoutHeader}>
@@ -31,7 +35,7 @@ const Layout = ({ children }) => {
       </div>
       <div className={styles.layoutContent}>
         <ul className={styles.sidebar}>
-          {TABS.map((tab) => (
+          {TABS.filter((item) => !item.isPrivate || (item.isPrivate && isAdmin)).map((tab) => (
             <SideBarItem key={tab.id} item={tab} />
           ))}
         </ul>

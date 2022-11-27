@@ -44,7 +44,7 @@ const getUser = asyncHandler(async (req, res) => {
 // @route POST /users
 // @access Private
 const createNewUser = asyncHandler(async (req, res) => {
-  const { username, password, roles, email } = req.body;
+  const { username, password, roles, email, status } = req.body;
   //  check input data
   if (!username || !password || !email) {
     return res.status(400).json({ message: "All Fields are required!" });
@@ -62,7 +62,8 @@ const createNewUser = asyncHandler(async (req, res) => {
   const hashPwd = await hashPassword(password);
 
   const userObject = { username, password: hashPwd, email };
-  if (roles) userObject = { ...userObject, roles: [roles] };
+  if (roles) userObject.roles = roles;
+  if (status) userObject.status = status;
   // Create and store new user
   const user = await User.create(userObject);
   if (user) {
@@ -107,6 +108,24 @@ const updateUser = asyncHandler(async (req, res) => {
   res.status(200).json({ message: "updated user" });
 });
 
+// @desc Update role of user
+// @route PATCH /users/role
+// @access Private
+const updateUserRole = asyncHandler(async (req, res) => {
+  const { id, role } = req.body;
+  if (!id || !role) return res.status(400).json({ message: "All fields are required!" });
+
+  const user = await User.findById(id).exec();
+
+  if (!user) {
+    return res.status(400).json({ message: "User not found!" });
+  }
+
+  user.roles = role;
+  await user.save();
+  res.status(200).json({ message: "updated role successfully!" });
+})
+
 // @desc Delete a user
 // @route DELETE /users
 // @access Private
@@ -131,4 +150,4 @@ const deleteUser = asyncHandler(async (req, res) => {
   res.status(200).json({ message: `Username ${result.username} with ID ${result._id} deleted!` });
 });
 
-module.exports = { getAllUsers, getUser, createNewUser, updateUser, deleteUser };
+module.exports = { getAllUsers, getUser, createNewUser, updateUser, deleteUser, updateUserRole };

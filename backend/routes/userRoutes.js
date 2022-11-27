@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/userController');
-const { authByToken } = require('../middleware/auth');
+const { authByToken, authByAdminToken } = require('../middleware/auth');
 
 router.route('/')
   .get(authByToken, userController.getAllUsers)
@@ -11,6 +11,9 @@ router.route('/')
 
 router.route('/:userId')
   .get(authByToken, userController.getUser)
+
+router.route('/role')
+  .patch(authByAdminToken, userController.updateUserRole)
 
 module.exports = router;
 

@@ -1,8 +1,9 @@
 import React from 'react';
 import { IoIosMore } from 'react-icons/io';
 import { useNavigate } from 'react-router-dom';
-import { Checkbox, IconButton, Popover, Table, Whisper } from 'rsuite';
+import { Checkbox, IconButton, Popover, Table, Whisper, Modal, Button, InputPicker } from 'rsuite';
 import 'rsuite/dist/rsuite.min.css';
+import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import styles from './AdminTable.module.scss';
 
 const { Column, HeaderCell, Cell } = Table;
@@ -39,8 +40,33 @@ const CheckCell = ({ rowData, onChange, checkedKeys, dataKey, ...props }) => (
   </Cell>
 );
 
-const ActionCell = ({ rowData, dataKey, ...props }) => {
+const ActionCell = ({ rowData, dataKey, getAllUsers, ...props }) => {
   const navigate = useNavigate();
+  const axiosPrivate = useAxiosPrivate();
+  const { id, roles } = rowData;
+  const [openModal, setOpenModal] = React.useState(false);
+  const [roleValue, setRoleValue] = React.useState(roles);
+
+  const handleDeleteUser = async () => {
+    try {
+      await axiosPrivate.delete('/users', { data: { id } });
+      getAllUsers();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleEditUserRole = async () => {
+    try {
+      if (roleValue !== roles) {
+        await axiosPrivate.patch('/users/role', { id, role: roleValue });
+        getAllUsers();
+      }
+      setOpenModal(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <Cell {...props} className="link-group">
@@ -50,21 +76,42 @@ const ActionCell = ({ rowData, dataKey, ...props }) => {
         speaker={
           <Popover>
             <div className={styles.renderMenu}>
-              <button onClick={() => navigate(`/my-profile/${rowData.id}`)}>View Profile</button>
-              <button>Edit</button>
-              <button>Delete</button>
+              <button onClick={() => navigate(`/my-profile/${id}`)}>View Profile</button>
+              <button onClick={() => setOpenModal(true)}>Edit Role</button>
+              <button onClick={handleDeleteUser}>Delete</button>
             </div>
           </Popover>
         }
       >
         <IconButton appearance="subtle" icon={<IoIosMore />} />
       </Whisper>
+      <Modal size="xs" open={openModal} onClose={() => setOpenModal(false)}>
+        <Modal.Header>
+          <Modal.Title>Update User Role</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <InputPicker
+            value={roleValue}
+            onChange={setRoleValue}
+            data={['admin', 'user'].map((item) => ({ label: item, value: item }))}
+            style={{ width: '100%' }}
+          />
+        </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={handleEditUserRole} appearance="primary">
+            Ok
+          </Button>
+          <Button onClick={() => setOpenModal(false)} appearance="subtle">
+            Cancel
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </Cell>
   );
 };
 
 function AdminTable(props) {
-  const { data, checkedKeys, setCheckedKeys } = props;
+  const { data, checkedKeys, setCheckedKeys, getUsers } = props;
   const [sortColumn, setSortColumn] = React.useState();
   const [sortType, setSortType] = React.useState();
   const [loading, setLoading] = React.useState(false);
@@ -161,9 +208,9 @@ function AdminTable(props) {
         <HeaderCell>Status</HeaderCell>
         <Cell dataKey="status" />
       </Column>
-      <Column flexGrow={1}>
+      <Column flexGrow={1.5}>
         <HeaderCell>{/* <IoIosMore /> */}</HeaderCell>
-        <ActionCell dataKey="id" />
+        <ActionCell dataKey="id" getAllUsers={getUsers} />
       </Column>
     </Table>
   );
