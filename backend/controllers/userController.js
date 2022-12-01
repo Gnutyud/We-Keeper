@@ -1,7 +1,7 @@
 const User = require("../models/User");
 const Note = require("../models/Note");
 const asyncHandler = require("express-async-handler");
-const { hashPassword } = require("../helper/password");
+const { hashPassword, matchPassword } = require("../helper/password");
 
 // @desc Get all users
 // @route Get /users
@@ -12,11 +12,13 @@ const getAllUsers = asyncHandler(async (req, res) => {
     return res.status(400).json({ message: "No users found!" });
   }
 
-  // Add total notes to each user before sending the response 
-  const userWithNotes = await Promise.all(users.map(async (user) => {
-    const notes = await Note.find({ userId: user._id }).lean().exec();
-    return { ...user, totalNotes: notes?.length }
-  }))
+  // Add total notes to each user before sending the response
+  const userWithNotes = await Promise.all(
+    users.map(async (user) => {
+      const notes = await Note.find({ userId: user._id }).lean().exec();
+      return { ...user, totalNotes: notes?.length };
+    })
+  );
 
   return res.status(200).json(userWithNotes);
 });
@@ -77,9 +79,9 @@ const createNewUser = asyncHandler(async (req, res) => {
 // @route PATCH /users
 // @access Private
 const updateUser = asyncHandler(async (req, res) => {
-  const { username, password, roles, id, active } = req.body;
+  const { username, currentPassword, id, email, status, newPassword } = req.body;
   // confirm data
-  if (!username || !id || !Array.isArray(roles) || !roles.length || typeof active !== "boolean") {
+  if (!username || !id || !email) {
     return res.status(400).json({ message: "All fields are required!" });
   }
 
@@ -90,21 +92,33 @@ const updateUser = asyncHandler(async (req, res) => {
   }
 
   // check duplicate
-  const duplicate = await User.findOne({ username }).lean().exec();
-  if (duplicate && duplicate?._id.toString() !== id) {
-    return res.status(409).json({ message: "username already exist" });
+  const duplicateUsername = await User.findOne({ username }).lean().exec();
+  if (duplicateUsername && duplicateUsername?._id.toString() !== id) {
+    return res.status(409).json({ message: "Username already exist", field: "username" });
+  }
+
+  const duplicateEmail = await User.findOne({ email }).lean().exec();
+  if (duplicateEmail && duplicateEmail?._id.toString() !== id) {
+    return res.status(409).json({ message: "Email already exist", field: "email" });
   }
 
   user.username = username;
-  user.roles = roles;
-  user.active = active;
+  user.email = email;
 
-  if (password) {
-    // Hash password
-    user.password = await hashPassword(password);
+  if (currentPassword) {
+    const matchPwd = await matchPassword(user.password, currentPassword);
+    if (!matchPwd) {
+      return res.status(401).json({ message: "Incorrect password. Please try again!", field: "currentPassword" });
+    }
+    if (newPassword) {
+      // Hash password
+      user.password = await hashPassword(newPassword);
+    }
   }
 
-  const updateUser = await user.save();
+  if (status) user.status = status;
+
+  await user.save();
   res.status(200).json({ message: "updated user" });
 });
 
@@ -124,7 +138,7 @@ const updateUserRole = asyncHandler(async (req, res) => {
   user.roles = role;
   await user.save();
   res.status(200).json({ message: "updated role successfully!" });
-})
+});
 
 // @desc Delete a user
 // @route DELETE /users

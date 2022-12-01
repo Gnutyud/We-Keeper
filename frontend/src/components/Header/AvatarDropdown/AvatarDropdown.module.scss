@@ -2,7 +2,7 @@
   background-color: rgb(random(255), random(255), random(255));
 }
 
-.profile {
+.avatarDropdown {
   position: relative;
   z-index: 10;
   ul {
@@ -40,7 +40,7 @@
       }
     }
   }
-  .info {
+  .dropdown {
     padding: 20px 15px;
     background-color: white;
     border-radius: 15px;
@@ -90,7 +90,7 @@
       }
     }
 
-    .info-menu {
+    .dropdown-menu {
       margin-bottom: 0;
       li {
         border-top: 1px solid #cecece;

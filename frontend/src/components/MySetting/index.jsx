@@ -1,5 +1,203 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import useAxiosPrivate from '../../hooks/useAxiosPrivate';
+import AppContext from '../../store/context';
+import TextInput from '../UI/TextInput';
+import styles from './MySetting.module.scss';
+import Button from '../UI/Button';
 
-const MySetting = () => <div>MySetting</div>;
+const MySetting = () => {
+  const initialValues = {
+    avatar: '',
+    status: '',
+    email: '',
+    username: '',
+    currentPassword: '',
+    newPassword: '',
+    confirmNewPassword: '',
+  };
+  const initialErrors = {
+    username: '',
+    currentPassword: '',
+    newPassword: '',
+    confirmNewPassword: '',
+    email: '',
+    error: '',
+    success: '',
+  };
+  const [formValues, setFormValues] = useState(initialValues);
+  const [formErrors, setFormErrors] = useState(initialErrors);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const axiosPrivate = useAxiosPrivate();
+  const { auth } = useContext(AppContext);
+  //   const navigate = useNavigate();
+  const { userId } = useParams();
+
+  useEffect(() => {
+    const getProfile = async () => {
+      if (userId || auth?.userInfo?.userId) {
+        try {
+          const response = await axiosPrivate.get(`/users/${userId || auth?.userInfo?.userId}`);
+          setFormValues((values) => ({
+            ...values,
+            username: response.data?.username,
+            email: response.data?.email,
+            avatar: response.data?.avatar,
+            status: response.data?.status,
+          }));
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    };
+    getProfile();
+    // eslint-disable-next-line
+  }, []);
+
+  const submitForm = async () => {
+    try {
+      if (auth?.userInfo?.userId) {
+        setLoading(true);
+        await axiosPrivate.patch('/users', { ...formValues, id: auth.userInfo.userId });
+        setLoading(false);
+        setFormErrors({ ...formErrors, success: 'Saved successfully' });
+        setFormValues((values) => ({
+          ...values,
+          currentPassword: '',
+          newPassword: '',
+          confirmNewPassword: '',
+        }));
+      }
+    } catch (err) {
+      setLoading(false);
+      if (err.response?.data?.message) {
+        setFormErrors({ ...formErrors, [err.response.data.field]: err.response.data.message });
+      } else if (err.errors?.message) {
+        console.log(err.errors.message);
+        setFormErrors({ ...formErrors, error: err.errors.message });
+      } else {
+        setFormErrors({ ...formErrors, error: err.message });
+      }
+    }
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormValues({ ...formValues, [name]: value });
+    setFormErrors({ ...formErrors, [name]: '', error: '' });
+  };
+
+  const validate = (values) => {
+    const errors = {};
+    if (!values.username) {
+      errors.username = 'Cannot be blank';
+    } else if (values.username.length < 4) {
+      errors.username = 'Username must be more than 4 characters';
+    }
+    if (values.currentPassword) {
+      if (!values.newPassword) {
+        errors.newPassword = 'Cannot be blank';
+      }
+      if (!values.confirmNewPassword) {
+        errors.confirmNewPassword = 'Cannot be blank';
+      }
+      if (values.newPassword.length < 6) {
+        errors.newPassword = 'Password must be more than 6 characters';
+      }
+      if (
+        values.newPassword &&
+        values.confirmNewPassword &&
+        values.newPassword !== values.confirmNewPassword
+      ) {
+        errors.confirmNewPassword = 'Password not match!';
+      }
+    }
+    return errors;
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setFormErrors(validate(formValues));
+    setIsSubmitting(true);
+  };
+
+  useEffect(() => {
+    if (Object.keys(formErrors).length === 0 && isSubmitting && formValues.username && formValues.email) {
+      submitForm();
+    }
+    // eslint-disable-next-line
+  }, [formErrors, isSubmitting]);
+
+  return (
+    <div className={styles.setting}>
+      <form onSubmit={handleSubmit}>
+        <h2 className={styles.title}>My settings</h2>
+        <div className={styles.avatar}>
+          <p className={styles.fieldLabel}>Avatar:</p>
+          <div className={styles.avatarImage}>
+            {formValues?.avatar && <img src={formValues?.avatar} alt="avatar" />}
+            {!formValues?.avatar && formValues?.username?.charAt(0)?.toUpperCase()}
+          </div>
+        </div>
+        <div className={styles.listField}>
+          <TextInput
+            fieldName="Username:"
+            name="username"
+            id="username"
+            value={formValues.username}
+            onChange={handleChange}
+            error={formErrors.username}
+          />
+          <TextInput
+            type="password"
+            fieldName="Current password:"
+            name="currentPassword"
+            id="currentPassword"
+            value={formValues.currentPassword}
+            onChange={handleChange}
+            error={formErrors.currentPassword}
+          />
+          <TextInput
+            fieldName="Status:"
+            name="status"
+            id="status"
+            value={formValues.status}
+            onChange={handleChange}
+          />
+          <TextInput
+            type="password"
+            fieldName="New password:"
+            name="newPassword"
+            id="newPassword"
+            value={formValues.newPassword}
+            onChange={handleChange}
+            error={formErrors.newPassword}
+          />
+          <TextInput
+            fieldName="Email:"
+            name="email"
+            id="email"
+            value={formValues.email}
+            onChange={handleChange}
+            error={formErrors.email}
+          />
+          <TextInput
+            type="password"
+            fieldName="Confirm new password:"
+            name="confirmNewPassword"
+            id="confirmNewPassword"
+            value={formValues.confirmNewPassword}
+            onChange={handleChange}
+            error={formErrors.confirmNewPassword}
+          />
+        </div>
+        <div className={styles.submit}>
+          <Button width="100px" type="submit" name="Save" loading={loading} />
+        </div>
+      </form>
+    </div>
+  );
+};
 
 export default MySetting;

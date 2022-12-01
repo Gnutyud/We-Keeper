@@ -1,7 +1,7 @@
 import moment from 'moment';
 import React, { useContext, useRef, useState } from 'react';
 import { AiOutlineLogout } from 'react-icons/ai';
-import { BiEditAlt, BiUser } from 'react-icons/bi';
+import { BiUser } from 'react-icons/bi';
 import { FiHelpCircle } from 'react-icons/fi';
 import { IoSettingsOutline } from 'react-icons/io5';
 import { RiAdminLine } from 'react-icons/ri';
@@ -9,9 +9,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import useOnClickOutside from '../../../hooks/useOnClickOutside';
 import appApi from '../../../services/appApi';
 import AppContext from '../../../store/context';
-import classes from './Profile.module.scss';
+import classes from './AvatarDropdown.module.scss';
 
-function Profile() {
+function AvatarDropdown() {
   const [showDropdown, setShowDropdown] = useState(false);
   const ref = useRef();
   useOnClickOutside(ref, () => setShowDropdown(false));
@@ -34,7 +34,7 @@ function Profile() {
   };
 
   return (
-    <div className={classes.profile} ref={ref}>
+    <div className={classes.avatarDropdown} ref={ref}>
       <div
         role="button"
         tabIndex={0}
@@ -46,20 +46,20 @@ function Profile() {
         {!avatar && username?.charAt(0)?.toUpperCase()}
       </div>
       {showDropdown && (
-        <div className={classes.info}>
+        <div className={classes.dropdown}>
           <h3 className={classes.name}>
             {username}
-            <p className={classes.joinDate}>join date: {moment(joinDate).add(10, 'days').calendar()}</p>
+            <p className={classes.joinDate}>join date: {moment(joinDate).format('DD/MM/YYYY')}</p>
           </h3>
-          <ul className={classes['info-menu']}>
+          <ul className={classes['dropdown-menu']}>
             <li>
               <BiUser />
               <Link to="/my-profile">My Profile</Link>
             </li>
-            <li>
+            {/* <li>
               <BiEditAlt />
               <Link to="/">Edit Profile</Link>
-            </li>
+            </li> */}
             {role === 'admin' && (
               <li>
                 <RiAdminLine />
@@ -87,4 +87,4 @@ function Profile() {
   );
 }
 
-export default Profile;
+export default AvatarDropdown;
