@@ -1,8 +1,6 @@
 @import '../../assets//styles/global';
 
-.profile {
-  height: 100%;
-
+.setting {
   .title {
     color: $primary-color;
     margin-bottom: 30px;
@@ -14,9 +12,7 @@
   }
 
   .avatar {
-    margin-bottom: 50px;
-    display: flex;
-    justify-content: center;
+    margin-bottom: 20px;
     .avatarImage {
       margin-top: 5px;
       width: 150px;
@@ -39,17 +35,14 @@
   .listField {
     display: grid;
     grid-template-columns: 1fr 1fr;
+    column-gap: 50px;
   }
 
-  .dangrousZone {
-    background-color: $white;
+  .submit {
+    display: flex;
+    justify-content: flex-end;
     padding-top: 15px;
     margin-top: 150px;
     border-top: 1px solid $gray-1;
-
-    .deleteAccount {
-      @include buttonLink;
-      color: $red;
-    }
   }
 }

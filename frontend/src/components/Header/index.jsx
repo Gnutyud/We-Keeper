@@ -1,7 +1,7 @@
 import React from 'react';
 import logo from '../../assets/images/logo.jpg';
 import Search from './Search';
-import Profile from './Profile';
+import AvatarDropdown from './AvatarDropdown';
 import classes from './Header.module.scss';
 
 function Header({ title }) {
@@ -13,7 +13,7 @@ function Header({ title }) {
       </div>
       <div className={classes['header-right']}>
         <Search text="search here..." cname="btn btn-color search" />
-        <Profile />
+        <AvatarDropdown />
       </div>
     </div>
   );
