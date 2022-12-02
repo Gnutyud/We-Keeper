@@ -29,6 +29,7 @@ const MySetting = () => {
   const [formErrors, setFormErrors] = useState(initialErrors);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [loading, setLoading] = useState(false);
+  //   const [imageFile, setImageFile] = useState();
   const axiosPrivate = useAxiosPrivate();
   const { auth } = useContext(AppContext);
   //   const navigate = useNavigate();
@@ -129,6 +130,21 @@ const MySetting = () => {
     // eslint-disable-next-line
   }, [formErrors, isSubmitting]);
 
+  const handleUploadImage = async (e) => {
+    const file = e.target.files[0];
+    if (/^image\//.test(file.type)) {
+      const formData = new FormData();
+      formData.append('file', file);
+      const pathRes = await axiosPrivate.post('/upload', formData);
+      setFormValues((prev) => ({
+        ...prev,
+        avatar: pathRes.url,
+      }));
+    } else {
+      console.log('You could only upload images');
+    }
+  };
+
   return (
     <div className={styles.setting}>
       <form onSubmit={handleSubmit}>
@@ -136,8 +152,11 @@ const MySetting = () => {
         <div className={styles.avatar}>
           <p className={styles.fieldLabel}>Avatar:</p>
           <div className={styles.avatarImage}>
-            {formValues?.avatar && <img src={formValues?.avatar} alt="avatar" />}
+            {formValues?.avatar && <img src={`data:image/png;base64, ${formValues?.avatar}`} alt="avatar" />}
             {!formValues?.avatar && formValues?.username?.charAt(0)?.toUpperCase()}
+          </div>
+          <div>
+            <input type="file" name="avatar" accept=".png, .jpg, .jpeg" onChange={handleUploadImage} />
           </div>
         </div>
         <div className={styles.listField}>
