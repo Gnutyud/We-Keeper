@@ -79,7 +79,7 @@ const createNewUser = asyncHandler(async (req, res) => {
 // @route PATCH /users
 // @access Private
 const updateUser = asyncHandler(async (req, res) => {
-  const { username, currentPassword, id, email, status, newPassword } = req.body;
+  const { username, currentPassword, id, email, status, newPassword, avatar } = req.body;
   // confirm data
   if (!username || !id || !email) {
     return res.status(400).json({ message: "All fields are required!" });
@@ -117,6 +117,7 @@ const updateUser = asyncHandler(async (req, res) => {
   }
 
   if (status) user.status = status;
+  if(avatar) user.avatar = avatar;
 
   await user.save();
   res.status(200).json({ message: "updated user" });

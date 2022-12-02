@@ -1,10 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { IoImagesOutline } from 'react-icons/io5';
 import { useParams } from 'react-router-dom';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import AppContext from '../../store/context';
+import Button from '../UI/Button';
 import TextInput from '../UI/TextInput';
 import styles from './MySetting.module.scss';
-import Button from '../UI/Button';
 
 const MySetting = () => {
   const initialValues = {
@@ -29,6 +30,7 @@ const MySetting = () => {
   const [formErrors, setFormErrors] = useState(initialErrors);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [loading, setLoading] = useState(false);
+  //   const [imageFile, setImageFile] = useState();
   const axiosPrivate = useAxiosPrivate();
   const { auth } = useContext(AppContext);
   //   const navigate = useNavigate();
@@ -129,6 +131,21 @@ const MySetting = () => {
     // eslint-disable-next-line
   }, [formErrors, isSubmitting]);
 
+  const handleUploadImage = async (e) => {
+    const file = e.target.files[0];
+    if (/^image\//.test(file.type)) {
+      const formData = new FormData();
+      formData.append('file', file);
+      const pathRes = await axiosPrivate.post('/upload', formData);
+      setFormValues((prev) => ({
+        ...prev,
+        avatar: pathRes.url,
+      }));
+    } else {
+      console.log('You could only upload images');
+    }
+  };
+
   return (
     <div className={styles.setting}>
       <form onSubmit={handleSubmit}>
@@ -136,8 +153,20 @@ const MySetting = () => {
         <div className={styles.avatar}>
           <p className={styles.fieldLabel}>Avatar:</p>
           <div className={styles.avatarImage}>
-            {formValues?.avatar && <img src={formValues?.avatar} alt="avatar" />}
+            {formValues?.avatar && <img src={`data:image/png;base64, ${formValues?.avatar}`} alt="avatar" />}
             {!formValues?.avatar && formValues?.username?.charAt(0)?.toUpperCase()}
+            <div className={styles.uploadImage}>
+              <label htmlFor="imageUpload">
+                <IoImagesOutline size={16} />
+                <input
+                  id="imageUpload"
+                  type="file"
+                  name="avatar"
+                  accept=".png, .jpg, .jpeg"
+                  onChange={handleUploadImage}
+                />
+              </label>
+            </div>
           </div>
         </div>
         <div className={styles.listField}>

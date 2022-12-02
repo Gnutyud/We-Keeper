@@ -48,7 +48,7 @@ const MyProfile = () => {
 
       <div className={styles.avatar}>
         <div className={styles.avatarImage}>
-          {data?.avatar && <img src={data?.avatar} alt="avatar" />}
+          {data?.avatar && <img src={`data:image/png;base64, ${data?.avatar}`} alt="avatar" />}
           {!data?.avatar && data?.username?.charAt(0)?.toUpperCase()}
         </div>
       </div>
