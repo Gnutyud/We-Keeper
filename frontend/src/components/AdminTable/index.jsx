@@ -22,7 +22,7 @@ const ImageCell = ({ rowData, dataKey, ...props }) => (
         display: 'inline-block',
       }}
     >
-      <img src={rowData.avatar} width="40" alt="avatar" />
+      <img src={`data:image/png;base64, ${rowData.avatar}`} width="40" alt="avatar" />
     </div>
   </Cell>
 );

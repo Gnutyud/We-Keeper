@@ -1,10 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { IoImagesOutline } from 'react-icons/io5';
 import { useParams } from 'react-router-dom';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import AppContext from '../../store/context';
+import Button from '../UI/Button';
 import TextInput from '../UI/TextInput';
 import styles from './MySetting.module.scss';
-import Button from '../UI/Button';
 
 const MySetting = () => {
   const initialValues = {
@@ -154,9 +155,18 @@ const MySetting = () => {
           <div className={styles.avatarImage}>
             {formValues?.avatar && <img src={`data:image/png;base64, ${formValues?.avatar}`} alt="avatar" />}
             {!formValues?.avatar && formValues?.username?.charAt(0)?.toUpperCase()}
-          </div>
-          <div>
-            <input type="file" name="avatar" accept=".png, .jpg, .jpeg" onChange={handleUploadImage} />
+            <div className={styles.uploadImage}>
+              <label htmlFor="imageUpload">
+                <IoImagesOutline size={16} />
+                <input
+                  id="imageUpload"
+                  type="file"
+                  name="avatar"
+                  accept=".png, .jpg, .jpeg"
+                  onChange={handleUploadImage}
+                />
+              </label>
+            </div>
           </div>
         </div>
         <div className={styles.listField}>

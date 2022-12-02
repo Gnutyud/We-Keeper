@@ -42,7 +42,7 @@ function AvatarDropdown() {
         onClick={() => setShowDropdown((prev) => !prev)}
         onKeyDown={() => setShowDropdown((prev) => !prev)}
       >
-        {avatar && <img src={avatar} alt="avatar" />}
+        {avatar && <img src={`data:image/png;base64, ${avatar}`} alt="avatar" />}
         {!avatar && username?.charAt(0)?.toUpperCase()}
       </div>
       {showDropdown && (
