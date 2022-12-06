@@ -1,9 +1,10 @@
 import React from 'react';
 import { IoIosMore } from 'react-icons/io';
 import { useNavigate } from 'react-router-dom';
-import { Checkbox, IconButton, Popover, Table, Whisper, Modal, Button, InputPicker } from 'rsuite';
+import { Button, Checkbox, IconButton, InputPicker, Modal, Popover, Table, Whisper } from 'rsuite';
 import 'rsuite/dist/rsuite.min.css';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
+import ConfirmModal from '../UI/ConfirmModal';
 import styles from './AdminTable.module.scss';
 
 const { Column, HeaderCell, Cell } = Table;
@@ -40,19 +41,23 @@ const CheckCell = ({ rowData, onChange, checkedKeys, dataKey, ...props }) => (
   </Cell>
 );
 
-const ActionCell = ({ rowData, dataKey, getAllUsers, ...props }) => {
+const ActionCell = ({ rowData, dataKey, getAllUsers, setIsShowSuccess, ...props }) => {
   const navigate = useNavigate();
   const axiosPrivate = useAxiosPrivate();
   const { id, roles } = rowData;
   const [openModal, setOpenModal] = React.useState(false);
+  const [isShowConfirmDelete, setIsShowConfirmDelete] = React.useState(false);
   const [roleValue, setRoleValue] = React.useState(roles);
 
   const handleDeleteUser = async () => {
     try {
       await axiosPrivate.delete('/users', { data: { id } });
+      setIsShowConfirmDelete(false);
+      setIsShowSuccess(true);
       getAllUsers();
     } catch (error) {
       console.log(error);
+      setIsShowConfirmDelete(false);
     }
   };
 
@@ -78,7 +83,7 @@ const ActionCell = ({ rowData, dataKey, getAllUsers, ...props }) => {
             <div className={styles.renderMenu}>
               <button onClick={() => navigate(`/my-profile/${id}`)}>View Profile</button>
               <button onClick={() => setOpenModal(true)}>Edit Role</button>
-              <button onClick={handleDeleteUser}>Delete</button>
+              <button onClick={() => setIsShowConfirmDelete(true)}>Delete</button>
             </div>
           </Popover>
         }
@@ -106,12 +111,20 @@ const ActionCell = ({ rowData, dataKey, getAllUsers, ...props }) => {
           </Button>
         </Modal.Footer>
       </Modal>
+      {isShowConfirmDelete && (
+        <ConfirmModal
+          onClose={() => setIsShowConfirmDelete(false)}
+          onConfirm={handleDeleteUser}
+          title="Warning !!!"
+          message="Are you sure want to delete this user?"
+        />
+      )}
     </Cell>
   );
 };
 
 function AdminTable(props) {
-  const { data, checkedKeys, setCheckedKeys, getUsers } = props;
+  const { data, checkedKeys, setCheckedKeys, getUsers, setIsShowSuccess } = props;
   const [sortColumn, setSortColumn] = React.useState();
   const [sortType, setSortType] = React.useState();
   const [loading, setLoading] = React.useState(false);
@@ -167,52 +180,54 @@ function AdminTable(props) {
   };
 
   return (
-    <Table
-      height={420}
-      data={getData()}
-      fillHeight
-      sortColumn={sortColumn}
-      sortType={sortType}
-      onSortColumn={handleSortColumn}
-      loading={loading}
-    >
-      <Column width={50} align="center">
-        <HeaderCell style={{ padding: 0 }}>
-          <div style={{ lineHeight: '40px' }}>
-            <Checkbox inline checked={checked} indeterminate={indeterminate} onChange={handleCheckAll} />
-          </div>
-        </HeaderCell>
-        <CheckCell dataKey="id" checkedKeys={checkedKeys} onChange={handleCheck} />
-      </Column>
-      <Column width={75} align="center">
-        <HeaderCell>Avartar</HeaderCell>
-        <ImageCell dataKey="avartar" />
-      </Column>
-      <Column flexGrow={1} fixed sortable>
-        <HeaderCell>Username</HeaderCell>
-        <Cell dataKey="username" />
-      </Column>
-      <Column width={100} sortable>
-        <HeaderCell>Notes</HeaderCell>
-        <Cell dataKey="totalNotes" />
-      </Column>
-      <Column sortable flexGrow={1.5}>
-        <HeaderCell>Email</HeaderCell>
-        <Cell dataKey="email" />
-      </Column>
-      <Column flexGrow={1} sortable>
-        <HeaderCell>Role</HeaderCell>
-        <Cell dataKey="roles" />
-      </Column>
-      <Column flexGrow={1.5} sortable>
-        <HeaderCell>Status</HeaderCell>
-        <Cell dataKey="status" />
-      </Column>
-      <Column flexGrow={1.5}>
-        <HeaderCell>{/* <IoIosMore /> */}</HeaderCell>
-        <ActionCell dataKey="id" getAllUsers={getUsers} />
-      </Column>
-    </Table>
+    <div>
+      <Table
+        height={420}
+        data={getData()}
+        fillHeight
+        sortColumn={sortColumn}
+        sortType={sortType}
+        onSortColumn={handleSortColumn}
+        loading={loading}
+      >
+        <Column width={50} align="center">
+          <HeaderCell style={{ padding: 0 }}>
+            <div style={{ lineHeight: '40px' }}>
+              <Checkbox inline checked={checked} indeterminate={indeterminate} onChange={handleCheckAll} />
+            </div>
+          </HeaderCell>
+          <CheckCell dataKey="id" checkedKeys={checkedKeys} onChange={handleCheck} />
+        </Column>
+        <Column width={75} align="center">
+          <HeaderCell>Avartar</HeaderCell>
+          <ImageCell dataKey="avartar" />
+        </Column>
+        <Column flexGrow={1} fixed sortable>
+          <HeaderCell>Username</HeaderCell>
+          <Cell dataKey="username" />
+        </Column>
+        <Column width={100} sortable>
+          <HeaderCell>Notes</HeaderCell>
+          <Cell dataKey="totalNotes" />
+        </Column>
+        <Column sortable flexGrow={1.5}>
+          <HeaderCell>Email</HeaderCell>
+          <Cell dataKey="email" />
+        </Column>
+        <Column flexGrow={1} sortable>
+          <HeaderCell>Role</HeaderCell>
+          <Cell dataKey="roles" />
+        </Column>
+        <Column flexGrow={1.5} sortable>
+          <HeaderCell>Status</HeaderCell>
+          <Cell dataKey="status" />
+        </Column>
+        <Column flexGrow={1.5}>
+          <HeaderCell>{/* <IoIosMore /> */}</HeaderCell>
+          <ActionCell dataKey="id" getAllUsers={getUsers} setIsShowSuccess={setIsShowSuccess} />
+        </Column>
+      </Table>
+    </div>
   );
 }
 

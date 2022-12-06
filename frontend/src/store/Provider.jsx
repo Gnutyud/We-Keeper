@@ -8,6 +8,7 @@ const Provider = ({ children }) => {
   const value = useMemo(
     () => ({
       auth: state.auth,
+      profile: state.profile,
       noteData: state.noteData,
       isSearching: state.isSearching,
       searchNoteResult: state.searchNoteResult,
@@ -43,6 +44,9 @@ const Provider = ({ children }) => {
       },
       logout: () => {
         dispatch({ type: actions.LOG_OUT });
+      },
+      setProfile: (profileData) => {
+        dispatch({ type: actions.GET_PROFILE, payload: profileData });
       },
     }),
     [state]

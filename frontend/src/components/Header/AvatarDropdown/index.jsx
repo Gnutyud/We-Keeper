@@ -15,12 +15,9 @@ function AvatarDropdown() {
   const [showDropdown, setShowDropdown] = useState(false);
   const ref = useRef();
   useOnClickOutside(ref, () => setShowDropdown(false));
-  const { logout, setNoteList, auth } = useContext(AppContext);
+  const { logout, setNoteList, profile } = useContext(AppContext);
   const navigate = useNavigate();
-  const avatar = auth?.userInfo?.avatar;
-  const username = auth?.userInfo?.username;
-  const role = auth?.userInfo?.roles;
-  const joinDate = auth?.userInfo?.joinDate;
+  const { avatar, username, roles, joinDate } = profile;
 
   const handleLogout = async () => {
     try {
@@ -60,7 +57,7 @@ function AvatarDropdown() {
               <BiEditAlt />
               <Link to="/">Edit Profile</Link>
             </li> */}
-            {role === 'admin' && (
+            {roles === 'admin' && (
               <li>
                 <RiAdminLine />
                 <Link to="/admin">Admin Page</Link>

@@ -1,4 +1,5 @@
-@import '../../assets/styles/global';
+@import '../../assets/styles/mixin';
+@import '../../assets/styles/variables';
 
 .login-container {
   background-color: $gray-1;
@@ -22,7 +23,7 @@
       margin-bottom: 15px;
       margin-top: 0;
     }
-    p {
+    .desc {
       font-style: normal;
       font-weight: normal;
       font-size: 16px;
@@ -37,64 +38,10 @@
       text-align: center;
       margin-bottom: 10px;
       .successMsg {
-        color: #20df7f;
+        color: $green;
       }
       .errorMsg {
         color: $red;
-      }
-    }
-    .inputGroup {
-      display: flex;
-      flex-direction: column;
-      margin-bottom: 2px;
-      input {
-        height: 45px;
-        font-size: 16px;
-        margin-top: 5px;
-        padding: 8px 16px;
-        background-color: $primary-color;
-        color: $white;
-        border-radius: 10px;
-        border: none;
-        outline: none;
-      }
-      input:-webkit-autofill,
-      input:-webkit-autofill:hover,
-      input:-webkit-autofill:focus,
-      input:-webkit-autofill:active {
-        box-shadow: 0 0 0 30px $primary-color inset !important;
-      }
-      input:-webkit-autofill {
-        -webkit-text-fill-color: $white !important;
-      }
-      label b {
-        font-size: 16px;
-        color: $primary-color;
-      }
-      p {
-        color: $red;
-        text-align: left;
-        margin: 0;
-        height: 20px;
-      }
-      ::placeholder {
-        /* Chrome, Firefox, Opera, Safari 10.1+ */
-        color: $white;
-        opacity: 1; /* Firefox */
-        font-style: normal;
-        font-weight: normal;
-        font-size: 14px;
-        line-height: 20px;
-      }
-
-      :-ms-input-placeholder {
-        /* Internet Explorer 10-11 */
-        color: $white;
-      }
-
-      ::-ms-input-placeholder {
-        /* Microsoft Edge */
-        color: $white;
       }
     }
     .forgot {

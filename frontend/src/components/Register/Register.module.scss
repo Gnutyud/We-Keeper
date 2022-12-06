@@ -1,14 +1,8 @@
-@mixin buttonLink {
-  background-color: transparent;
-  border: none;
-  font-size: 16px;
-  color: #224957;
-  cursor: pointer;
-  font-family: inherit;
-}
+@import '../../assets/styles/mixin';
+@import '../../assets/styles/variables';
 
 .login-container {
-  background-color: #e5e5e5;
+  background-color: $gray-1;
   height: 100vh;
   overflow: hidden;
   position: relative;
@@ -25,18 +19,18 @@
       font-size: 64px;
       line-height: 80px;
       text-align: center;
-      color: #224957;
+      color: $primary-color;
       margin-bottom: 15px;
       margin-top: 0;
     }
-    p {
+    .desc {
       font-style: normal;
       font-weight: normal;
       font-size: 16px;
       line-height: 20px;
       /* identical to box height */
       text-align: center;
-      color: #224957;
+      color: $primary-color;
       margin-bottom: 20px;
     }
     .message {
@@ -44,67 +38,13 @@
       text-align: center;
       margin-bottom: 10px;
       .successMsg {
-        color: #20df7f;
+        color: $green;
       }
       .errorMsg {
-        color: red;
+        color: $red;
       }
     }
-    .inputGroup {
-      display: flex;
-      flex-direction: column;
-      margin-bottom: 2px;
-      input {
-        height: 45px;
-        font-size: 16px;
-        margin-top: 5px;
-        padding: 8px 16px;
-        background-color: #224957;
-        color: white;
-        border-radius: 10px;
-        border: none;
-        outline: none;
-      }
-      input:-webkit-autofill,
-      input:-webkit-autofill:hover,
-      input:-webkit-autofill:focus,
-      input:-webkit-autofill:active {
-        box-shadow: 0 0 0 30px #224957 inset !important;
-      }
-      input:-webkit-autofill {
-        -webkit-text-fill-color: white !important;
-      }
-      label b {
-        font-size: 16px;
-        color: #224957;
-      }
-      p {
-        color: red;
-        text-align: left;
-        margin: 0;
-        height: 20px;
-      }
-      ::placeholder {
-        /* Chrome, Firefox, Opera, Safari 10.1+ */
-        color: white;
-        opacity: 1; /* Firefox */
-        font-style: normal;
-        font-weight: normal;
-        font-size: 14px;
-        line-height: 20px;
-      }
-
-      :-ms-input-placeholder {
-        /* Internet Explorer 10-11 */
-        color: white;
-      }
-
-      ::-ms-input-placeholder {
-        /* Microsoft Edge */
-        color: white;
-      }
-    }
-    .forgot {
+    .terms {
       display: flex;
       justify-content: space-between;
       margin-bottom: 25px;
@@ -116,7 +56,7 @@
           margin-right: 5px;
           width: 18px;
           height: 18px;
-          accent-color: #224957;
+          accent-color: $primary-color;
         }
         label {
           flex: 1;
@@ -127,7 +67,7 @@
       }
     }
   }
-  .signUp {
+  .login {
     margin-top: 20px;
     text-align: center;
     button {

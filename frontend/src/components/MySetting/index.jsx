@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { IoImagesOutline } from 'react-icons/io5';
-import { useParams } from 'react-router-dom';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import AppContext from '../../store/context';
 import Button from '../UI/Button';
+import SuccessModal from '../UI/SuccessModal';
 import TextInput from '../UI/TextInput';
 import styles from './MySetting.module.scss';
 
@@ -26,36 +26,19 @@ const MySetting = () => {
     error: '',
     success: '',
   };
-  const [formValues, setFormValues] = useState(initialValues);
+  const { auth, profile } = useContext(AppContext);
+  const [formValues, setFormValues] = useState({
+    ...initialValues,
+    username: profile.username,
+    email: profile.email,
+    avatar: profile.avatar,
+    status: profile.status,
+  });
   const [formErrors, setFormErrors] = useState(initialErrors);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [loading, setLoading] = useState(false);
-  //   const [imageFile, setImageFile] = useState();
+  const [isShowSuccess, setIsShowSuccess] = useState(false);
   const axiosPrivate = useAxiosPrivate();
-  const { auth } = useContext(AppContext);
-  //   const navigate = useNavigate();
-  const { userId } = useParams();
-
-  useEffect(() => {
-    const getProfile = async () => {
-      if (userId || auth?.userInfo?.userId) {
-        try {
-          const response = await axiosPrivate.get(`/users/${userId || auth?.userInfo?.userId}`);
-          setFormValues((values) => ({
-            ...values,
-            username: response.data?.username,
-            email: response.data?.email,
-            avatar: response.data?.avatar,
-            status: response.data?.status,
-          }));
-        } catch (error) {
-          console.error(error);
-        }
-      }
-    };
-    getProfile();
-    // eslint-disable-next-line
-  }, []);
 
   const submitForm = async () => {
     try {
@@ -70,6 +53,7 @@ const MySetting = () => {
           newPassword: '',
           confirmNewPassword: '',
         }));
+        setIsShowSuccess(true);
       }
     } catch (err) {
       setLoading(false);
@@ -225,6 +209,7 @@ const MySetting = () => {
           <Button width="100px" type="submit" name="Save" loading={loading} />
         </div>
       </form>
+      {isShowSuccess && <SuccessModal duration={2000} onClose={() => setIsShowSuccess(false)} />}
     </div>
   );
 };
