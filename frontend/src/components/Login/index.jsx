@@ -1,8 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { FcGoogle } from 'react-icons/fc';
+import { TfiFacebook } from 'react-icons/tfi';
 import { useNavigate } from 'react-router-dom';
 import appApi from '../../services/appApi';
 import AppContext from '../../store/context';
-import Button from '../UI/Button';
+import { Button, ButtonWithIcon } from '../UI/Button';
 import TextInput from '../UI/TextInput';
 import style from './Login.module.scss';
 
@@ -80,6 +82,23 @@ function Login() {
           {formErrors?.success && <p className={style.successMsg}>{formErrors?.success}</p>}
           {formErrors?.error && <p className={style.errorMsg}>{formErrors?.error}</p>}
         </div>
+        <div className={style.loginWith}>
+          <ButtonWithIcon
+            type="button"
+            name="Login With Google"
+            icon={<FcGoogle />}
+            customStyles={{ backgroundColor: 'white' }}
+          />
+          <ButtonWithIcon
+            type="button"
+            name="Login With Facebook"
+            icon={<TfiFacebook />}
+            customStyles={{ backgroundColor: '#4267B2', color: 'white' }}
+          />
+        </div>
+        <p className={style.desc} style={{ marginTop: '40px' }}>
+          -OR-
+        </p>
         <TextInput
           fieldName="Username:"
           name="username"
@@ -94,6 +113,7 @@ function Login() {
           name="password"
           id="password"
           placeholder="Enter your password"
+          type="password"
           value={formValues.password}
           onChange={handleChange}
           error={formErrors.password}

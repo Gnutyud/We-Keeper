@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import appApi from '../../services/appApi';
-import Button from '../UI/Button';
+import { Button } from '../UI/Button';
 import TextInput from '../UI/TextInput';
 import style from './Register.module.scss';
 
