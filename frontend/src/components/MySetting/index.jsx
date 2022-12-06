@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { IoImagesOutline } from 'react-icons/io5';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import AppContext from '../../store/context';
-import Button from '../UI/Button';
+import { Button } from '../UI/Button';
 import SuccessModal from '../UI/SuccessModal';
 import TextInput from '../UI/TextInput';
 import styles from './MySetting.module.scss';

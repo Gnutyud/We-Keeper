@@ -2,7 +2,7 @@ import React from 'react';
 import { ImSpinner11 } from 'react-icons/im';
 import styles from './Button.module.scss';
 
-function Button(props) {
+export const Button = (props) => {
   const { name, type, loading, width = '100%' } = props;
   return (
     <button type={type} className={styles.button} style={{ width }} disabled={loading}>
@@ -10,6 +10,19 @@ function Button(props) {
       {name}
     </button>
   );
-}
+};
 
-export default Button;
+export const ButtonWithIcon = (props) => {
+  const { name, type, loading, icon, customStyles } = props;
+  return (
+    <button
+      type={type}
+      className={styles.button}
+      style={{ width: '100%', ...customStyles }}
+      disabled={loading}
+    >
+      {icon && icon}
+      {name}
+    </button>
+  );
+};
