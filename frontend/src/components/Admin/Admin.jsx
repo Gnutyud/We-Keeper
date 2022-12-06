@@ -4,6 +4,9 @@ import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import appApi from '../../services/appApi';
 import AppContext from '../../store/context';
 import AdminTable from '../AdminTable';
+import ConfirmModal from '../UI/ConfirmModal';
+import Loading from '../UI/Loading';
+import SuccessModal from '../UI/SuccessModal';
 import AddNewUser from './AddNewUser';
 import styles from './Admin.module.scss';
 
@@ -23,6 +26,9 @@ function Admin() {
   const formRef = React.useRef();
   const [formValue, setFormValue] = React.useState(defaultValues);
   const [formError, setFormError] = React.useState({});
+  const [loading, setLoading] = React.useState(false);
+  const [isShowSuccess, setIsShowSuccess] = React.useState(false);
+  const [isShowConfirm, setIsShowConfirm] = React.useState(false);
 
   const axiosPrivate = useAxiosPrivate();
   // const navigate = useNavigate();
@@ -30,13 +36,16 @@ function Admin() {
 
   const getAllUsers = async () => {
     try {
+      setLoading(true);
       const response = await axiosPrivate.get(`/users`);
+      setLoading(false);
       setData(
         response
           .map((res) => ({ ...res, id: res._id }))
           .filter((dataItem) => dataItem.id !== auth?.userInfo?.userId)
       );
     } catch (error) {
+      setLoading(false);
       console.error(error);
     }
   };
@@ -53,6 +62,7 @@ function Admin() {
       .then(() => {
         getAllUsers();
         setCheckedKeys([]);
+        setIsShowSuccess(true);
       })
       .catch((err) => {
         console.log(err);
@@ -77,6 +87,7 @@ function Admin() {
       getAllUsers();
       handleClose();
       setFormValue(defaultValues);
+      setIsShowSuccess(true);
     } catch (err) {
       if (err.response?.data?.message) {
         setFormError({ ...formError, error: err.response.data.message });
@@ -89,11 +100,18 @@ function Admin() {
     }
   };
 
+  if (loading) return <Loading styles={{ height: '100%' }} />;
+
   return (
     <div className={styles.admin}>
       <h2 className={styles.title}>User Management</h2>
       <div className={styles.buttonGroup}>
-        <Button disabled={!checkedKeys.length} color="red" appearance="primary" onClick={handleDelete}>
+        <Button
+          disabled={!checkedKeys.length}
+          color="red"
+          appearance="primary"
+          onClick={() => setIsShowConfirm(true)}
+        >
           Delete
         </Button>
         <Button appearance="primary" onClick={handleOpen}>
@@ -106,6 +124,7 @@ function Admin() {
           checkedKeys={checkedKeys}
           setCheckedKeys={setCheckedKeys}
           getUsers={getAllUsers}
+          setIsShowSuccess={setIsShowSuccess}
         />
       </div>
       <Modal open={isShowAddUser} onClose={handleClose} size="xs">
@@ -135,6 +154,15 @@ function Admin() {
           </Button>
         </Modal.Footer>
       </Modal>
+      {isShowSuccess && <SuccessModal duration={2000} onClose={() => setIsShowSuccess(false)} />}
+      {isShowConfirm && (
+        <ConfirmModal
+          onClose={() => setIsShowConfirm(false)}
+          onConfirm={handleDelete}
+          title="Warning !!!"
+          message="Are you sure want to delete this users?"
+        />
+      )}
     </div>
   );
 }

@@ -9,6 +9,7 @@ export const actions = {
   SET_SEARCH_INPUT: 'SET_SEARCH_INPUT',
   SET_SELECTED_NOTE: 'SET_SELECTED_NOTE',
   LOG_OUT: 'LOG_OUT',
+  GET_PROFILE: 'GET_PROFILE',
 };
 
 const reducer = (state, action) => {
@@ -75,6 +76,12 @@ const reducer = (state, action) => {
       return {
         ...state,
         auth: {},
+      };
+    }
+    case actions.GET_PROFILE: {
+      return {
+        ...state,
+        profile: action.payload,
       };
     }
     default:

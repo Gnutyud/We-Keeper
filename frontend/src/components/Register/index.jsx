@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import appApi from '../../services/appApi';
 import Button from '../UI/Button';
+import TextInput from '../UI/TextInput';
 import style from './Register.module.scss';
 
 function Register() {
@@ -84,64 +85,49 @@ function Register() {
     <div className={style['login-container']}>
       <form className={style.center} onSubmit={(e) => handleSubmit(e)} noValidate>
         <h1>Sign Up</h1>
-        <p>Give us some of your information to get free access to fieldly!</p>
+        <p className={style.desc}>Give us some of your information to get free access to fieldly!</p>
         <div className={style.message}>
           {formErrors?.success && <p className={style.successMsg}>{formErrors?.success}</p>}
           {formErrors?.error && <p className={style.errorMsg}>{formErrors?.error}</p>}
         </div>
-        <div className={style.inputGroup}>
-          {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-          <label htmlFor="email">
-            <b>Email</b>
-          </label>
-          <input
-            type="text"
-            placeholder="Enter email"
-            name="email"
-            value={formValues.email}
-            onChange={handleChange}
-          />
-          <p>{formErrors.email}</p>
-        </div>
-        <div className={style.inputGroup}>
-          {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-          <label htmlFor="username">
-            <b>Username</b>
-          </label>
-          <input
-            type="text"
-            placeholder="Enter username"
-            name="username"
-            value={formValues.username}
-            onChange={handleChange}
-          />
-          <p>{formErrors.username}</p>
-        </div>
-        <div className={style.inputGroup}>
-          {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-          <label htmlFor="password">
-            <b>Password</b>
-          </label>
-          <input
-            type="password"
-            placeholder="Enter password"
-            name="password"
-            value={formValues.password}
-            onChange={handleChange}
-          />
-          <p>{formErrors.password}</p>
-        </div>
-        <div className={style.forgot}>
+        <TextInput
+          fieldName="Email:"
+          name="email"
+          id="email"
+          placeholder="Enter your email"
+          value={formValues.email}
+          onChange={handleChange}
+          error={formErrors.email}
+        />
+        <TextInput
+          fieldName="Username:"
+          name="username"
+          id="username"
+          placeholder="Enter your username"
+          value={formValues.username}
+          onChange={handleChange}
+          error={formErrors.username}
+        />
+        <TextInput
+          fieldName="Password:"
+          name="password"
+          id="password"
+          placeholder="Enter your password"
+          value={formValues.password}
+          onChange={handleChange}
+          error={formErrors.password}
+        />
+        <div className={style.terms}>
           <div className={style.checkbox}>
-            <input type="checkbox" name="remember" id="remember" />
+            <input type="checkbox" name="agreeTerms" id="agreeTerms" />
             {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-            <label htmlFor="remember">
+            <label htmlFor="agreeTerms">
               By creating an account you agree to the terms of use and our privacy policy
             </label>
           </div>
         </div>
         <Button type="submit" name="Sign Up" loading={loading} />
-        <div className={style.signUp}>
+        <div className={style.login}>
           Already have an account?
           <button type="button" onClick={() => navigate('/login')}>
             Log in

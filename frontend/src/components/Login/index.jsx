@@ -1,9 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Button from '../UI/Button';
-import style from './Login.module.scss';
 import appApi from '../../services/appApi';
 import AppContext from '../../store/context';
+import Button from '../UI/Button';
+import TextInput from '../UI/TextInput';
+import style from './Login.module.scss';
 
 function Login() {
   // without lib like formik and yub
@@ -74,39 +75,29 @@ function Login() {
     <div className={style['login-container']}>
       <form className={style.center} onSubmit={(e) => handleSubmit(e)} noValidate>
         <h1>Sign In</h1>
-        <p>Sign in and start starting take your notes!</p>
+        <p className={style.desc}>Sign in and start starting take your notes!</p>
         <div className={style.message}>
           {formErrors?.success && <p className={style.successMsg}>{formErrors?.success}</p>}
           {formErrors?.error && <p className={style.errorMsg}>{formErrors?.error}</p>}
         </div>
-        <div className={style.inputGroup}>
-          {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-          <label htmlFor="username">
-            <b>Username</b>
-          </label>
-          <input
-            type="text"
-            placeholder="Enter username"
-            name="username"
-            value={formValues.username}
-            onChange={handleChange}
-          />
-          <p>{formErrors.username}</p>
-        </div>
-        <div className={style.inputGroup}>
-          {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-          <label htmlFor="password">
-            <b>Password</b>
-          </label>
-          <input
-            type="password"
-            placeholder="Enter password"
-            name="password"
-            value={formValues.password}
-            onChange={handleChange}
-          />
-          <p>{formErrors.password}</p>
-        </div>
+        <TextInput
+          fieldName="Username:"
+          name="username"
+          id="username"
+          placeholder="Enter your username"
+          value={formValues.username}
+          onChange={handleChange}
+          error={formErrors.username}
+        />
+        <TextInput
+          fieldName="Password:"
+          name="password"
+          id="password"
+          placeholder="Enter your password"
+          value={formValues.password}
+          onChange={handleChange}
+          error={formErrors.password}
+        />
         <div className={style.forgot}>
           <div className={style.checkbox}>
             <input type="checkbox" name="remember" id="remember" />
