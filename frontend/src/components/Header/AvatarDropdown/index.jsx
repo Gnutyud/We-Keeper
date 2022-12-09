@@ -17,7 +17,7 @@ function AvatarDropdown() {
   useOnClickOutside(ref, () => setShowDropdown(false));
   const { logout, setNoteList, profile } = useContext(AppContext);
   const navigate = useNavigate();
-  const { avatar, username, roles, joinDate } = profile;
+  const { avatar, username, roles, joinDate, source } = profile;
 
   const handleLogout = async () => {
     try {
@@ -39,7 +39,7 @@ function AvatarDropdown() {
         onClick={() => setShowDropdown((prev) => !prev)}
         onKeyDown={() => setShowDropdown((prev) => !prev)}
       >
-        {avatar && <img src={`data:image/png;base64, ${avatar}`} alt="avatar" />}
+        {avatar && <img src={!source ? `data:image/png;base64, ${avatar}` : avatar} alt="avatar" />}
         {!avatar && username?.charAt(0)?.toUpperCase()}
       </div>
       {showDropdown && (

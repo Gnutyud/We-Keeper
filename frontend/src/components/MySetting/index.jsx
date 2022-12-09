@@ -137,7 +137,12 @@ const MySetting = () => {
         <div className={styles.avatar}>
           <p className={styles.fieldLabel}>Avatar:</p>
           <div className={styles.avatarImage}>
-            {formValues?.avatar && <img src={`data:image/png;base64, ${formValues?.avatar}`} alt="avatar" />}
+            {formValues?.avatar && (
+              <img
+                src={!profile?.source ? `data:image/png;base64, ${formValues?.avatar}` : formValues?.avatar}
+                alt="avatar"
+              />
+            )}
             {!formValues?.avatar && formValues?.username?.charAt(0)?.toUpperCase()}
             <div className={styles.uploadImage}>
               <label htmlFor="imageUpload">
@@ -163,6 +168,7 @@ const MySetting = () => {
             error={formErrors.username}
           />
           <TextInput
+            disabled={!!profile?.source}
             type="password"
             fieldName="Current password:"
             name="currentPassword"
@@ -179,6 +185,7 @@ const MySetting = () => {
             onChange={handleChange}
           />
           <TextInput
+            disabled={!!profile?.source}
             type="password"
             fieldName="New password:"
             name="newPassword"
@@ -196,6 +203,7 @@ const MySetting = () => {
             error={formErrors.email}
           />
           <TextInput
+            disabled={!!profile?.source}
             type="password"
             fieldName="Confirm new password:"
             name="confirmNewPassword"

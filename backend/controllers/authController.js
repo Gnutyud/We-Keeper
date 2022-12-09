@@ -40,7 +40,8 @@ const login = asyncHandler(async (req, res) => {
     avatar: foundUser.avatar,
     status: foundUser.status,
     roles: foundUser.roles,
-    joinDate: foundUser.createdAt
+    joinDate: foundUser.createdAt,
+    source: foundUser?.source,
   }
 
   res.json({ accessToken, userInfo });
@@ -52,6 +53,7 @@ const login = asyncHandler(async (req, res) => {
 const refresh = async (req, res) => {
   const cookies = req.cookies;
   let cookieName = process.env.REFRESH_TOKEN_COOKIE_NAME;
+  console.log("cookie", cookies, cookieName)
 
   if (cookies && !cookies[cookieName]) {
     return res.status(401).json({ message: "Unauthorized" });
@@ -77,7 +79,8 @@ const refresh = async (req, res) => {
       avatar: foundUser.avatar,
       status: foundUser.status,
       roles: foundUser.roles,
-      joinDate: foundUser.createdAt
+      joinDate: foundUser.createdAt,
+      source: foundUser?.source,
     }
 
     res.json({ accessToken, userInfo });

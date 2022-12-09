@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { FcGoogle } from 'react-icons/fc';
 import { TfiFacebook } from 'react-icons/tfi';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import appApi from '../../services/appApi';
 import AppContext from '../../store/context';
 import { Button, ButtonWithIcon } from '../UI/Button';
@@ -18,6 +18,25 @@ function Login() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { setAuth } = useContext(AppContext);
+  const location = useLocation();
+  const query = new URLSearchParams(location.search);
+  const token = query.get('token');
+
+  useEffect(() => {
+    if (token) {
+      const getLoginWithGoogleInfo = async () => {
+        try {
+          const res = await appApi.loginViaGoogle(token);
+          setAuth(res);
+          navigate('/');
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      getLoginWithGoogleInfo();
+    }
+    // navigate('/')
+  }, [token]);
 
   const submitForm = async () => {
     try {
@@ -73,6 +92,10 @@ function Login() {
     // eslint-disable-next-line
   }, [formErrors, isSubmitting]);
 
+  const authWithGoogle = () => {
+    window.open(`${process.env.REACT_APP_BASE_URL}/auth/google`, '_self');
+  };
+
   return (
     <div className={style['login-container']}>
       <form className={style.center} onSubmit={(e) => handleSubmit(e)} noValidate>
@@ -88,6 +111,7 @@ function Login() {
             name="Login With Google"
             icon={<FcGoogle />}
             customStyles={{ backgroundColor: 'white' }}
+            onClick={authWithGoogle}
           />
           <ButtonWithIcon
             type="button"

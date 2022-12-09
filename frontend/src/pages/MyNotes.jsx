@@ -16,7 +16,7 @@ function MyNotes() {
           const notes = await axiosPrivate.get(`/notes/${userId}`);
           const profile = await axiosPrivate.get(`/users/${userId}`);
           const [responseAuth, responseProfile] = await Promise.all([notes, profile]);
-          const { username, email, roles, status, avatar, createdAt } = responseProfile.data;
+          const { username, email, roles, status, avatar, createdAt, source } = responseProfile.data;
           setNoteList(responseAuth);
           setProfile({
             username,
@@ -24,6 +24,7 @@ function MyNotes() {
             roles,
             status,
             avatar,
+            source,
             joinDate: createdAt,
             totalNotes: responseProfile.totalNotes,
           });
