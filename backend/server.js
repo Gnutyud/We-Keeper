@@ -9,6 +9,7 @@ const session = require("express-session");
 const cors = require('cors');
 const corsOptions = require('./configs/corsOptions');
 const connectDb = require('./configs/dbConnect');
+const { configGoogleAuth, configFacebookAuth } = require("./configs/passport");
 const mongoose = require('mongoose');
 const MongoStore = require('connect-mongo');
 const passport = require('passport');
@@ -24,7 +25,8 @@ const uploadRoutes = require('./routes/uploadRoutes');
 connectDb();
 
 // Passport config
-require('./configs/passport')(passport);
+configGoogleAuth(passport);
+configFacebookAuth(passport);
 
 // middleware
 app.use(logger);

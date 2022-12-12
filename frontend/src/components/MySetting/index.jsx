@@ -167,8 +167,7 @@ const MySetting = () => {
             onChange={handleChange}
             error={formErrors.username}
           />
-          <TextInput
-            disabled={!!profile?.source}
+          {!profile?.source && <TextInput
             type="password"
             fieldName="Current password:"
             name="currentPassword"
@@ -176,7 +175,7 @@ const MySetting = () => {
             value={formValues.currentPassword}
             onChange={handleChange}
             error={formErrors.currentPassword}
-          />
+          />}
           <TextInput
             fieldName="Status:"
             name="status"
@@ -184,8 +183,7 @@ const MySetting = () => {
             value={formValues.status}
             onChange={handleChange}
           />
-          <TextInput
-            disabled={!!profile?.source}
+          {!profile?.source && <TextInput
             type="password"
             fieldName="New password:"
             name="newPassword"
@@ -193,7 +191,7 @@ const MySetting = () => {
             value={formValues.newPassword}
             onChange={handleChange}
             error={formErrors.newPassword}
-          />
+          />}
           <TextInput
             fieldName="Email:"
             name="email"
@@ -202,8 +200,7 @@ const MySetting = () => {
             onChange={handleChange}
             error={formErrors.email}
           />
-          <TextInput
-            disabled={!!profile?.source}
+          {!profile?.source && <TextInput
             type="password"
             fieldName="Confirm new password:"
             name="confirmNewPassword"
@@ -211,7 +208,7 @@ const MySetting = () => {
             value={formValues.confirmNewPassword}
             onChange={handleChange}
             error={formErrors.confirmNewPassword}
-          />
+          />}
         </div>
         <div className={styles.submit}>
           <Button width="100px" type="submit" name="Save" loading={loading} />
