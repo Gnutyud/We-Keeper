@@ -77,6 +77,10 @@ function Login() {
     window.open(`${process.env.REACT_APP_BASE_URL}/auth/google`, '_self');
   };
 
+  const authWithFacebook = () => {
+    window.open(`${process.env.REACT_APP_BASE_URL}/auth/facebook`, '_self');
+  };
+
   return (
     <div className={style['login-container']}>
       <form className={style.center} onSubmit={(e) => handleSubmit(e)} noValidate>
@@ -99,6 +103,7 @@ function Login() {
             name="Login With Facebook"
             icon={<TfiFacebook />}
             customStyles={{ backgroundColor: '#4267B2', color: 'white' }}
+            onClick={authWithFacebook}
           />
         </div>
         <p className={style.desc} style={{ marginTop: '40px' }}>

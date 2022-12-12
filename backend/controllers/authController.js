@@ -53,7 +53,6 @@ const login = asyncHandler(async (req, res) => {
 const refresh = async (req, res) => {
   const cookies = req.cookies;
   let cookieName = process.env.REFRESH_TOKEN_COOKIE_NAME;
-  console.log("cookie", cookies, cookieName);
 
   if (cookies && !cookies[cookieName]) {
     return res.status(401).json({ message: "Unauthorized" });
