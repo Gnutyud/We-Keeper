@@ -14,7 +14,7 @@ const MyProfile = () => {
   const [isShowConfirm, setIsShowConfirm] = useState(false);
   const navigate = useNavigate();
   const { userId } = useParams();
-  const { avatar, username, joinDate, status, totalNotes, email } = profile;
+  const { avatar, username, joinDate, status, totalNotes, email, source } = profile;
 
   useEffect(() => {
     const getProfile = async () => {
@@ -30,6 +30,7 @@ const MyProfile = () => {
             avatar: response.data.avatar,
             joinDate: response.data.createdAt,
             totalNotes: response.totalNotes,
+            source: response.data.source,
           });
           setLoading(false);
         } catch (error) {
@@ -65,7 +66,7 @@ const MyProfile = () => {
 
       <div className={styles.avatar}>
         <div className={styles.avatarImage}>
-          {avatar && <img src={`data:image/png;base64, ${avatar}`} alt="avatar" />}
+          {avatar && <img src={!source ? `data:image/png;base64, ${avatar}` : avatar} alt="avatar" />}
           {!avatar && username?.charAt(0)?.toUpperCase()}
         </div>
       </div>

@@ -10,6 +10,7 @@ export const initialState = {
     totalNotes: 0,
     roles: '',
     avatar: '',
+    source: '',
   },
   noteData: [],
   isSearching: false,

@@ -12,6 +12,7 @@ const appApi = {
       withCredentials: true,
     }),
   register: (data) => axiosClient.post('/users', data),
+  loginViaGoogle: (accessToken) => axiosClient.post('/auth/login/success', { token: accessToken }),
 };
 
 export default appApi;

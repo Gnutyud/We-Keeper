@@ -73,6 +73,10 @@ function Login() {
     // eslint-disable-next-line
   }, [formErrors, isSubmitting]);
 
+  const authWithGoogle = () => {
+    window.open(`${process.env.REACT_APP_BASE_URL}/auth/google`, '_self');
+  };
+
   return (
     <div className={style['login-container']}>
       <form className={style.center} onSubmit={(e) => handleSubmit(e)} noValidate>
@@ -88,6 +92,7 @@ function Login() {
             name="Login With Google"
             icon={<FcGoogle />}
             customStyles={{ backgroundColor: 'white' }}
+            onClick={authWithGoogle}
           />
           <ButtonWithIcon
             type="button"

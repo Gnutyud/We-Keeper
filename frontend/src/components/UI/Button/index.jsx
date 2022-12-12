@@ -13,13 +13,14 @@ export const Button = (props) => {
 };
 
 export const ButtonWithIcon = (props) => {
-  const { name, type, loading, icon, customStyles } = props;
+  const { name, type, loading, icon, customStyles, ...others } = props;
   return (
     <button
       type={type}
       className={styles.button}
       style={{ width: '100%', ...customStyles }}
       disabled={loading}
+      {...others}
     >
       {icon && icon}
       {name}
