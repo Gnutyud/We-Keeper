@@ -167,15 +167,17 @@ const MySetting = () => {
             onChange={handleChange}
             error={formErrors.username}
           />
-          {!profile?.source && <TextInput
-            type="password"
-            fieldName="Current password:"
-            name="currentPassword"
-            id="currentPassword"
-            value={formValues.currentPassword}
-            onChange={handleChange}
-            error={formErrors.currentPassword}
-          />}
+          {!profile?.source && (
+            <TextInput
+              type="password"
+              fieldName="Current password:"
+              name="currentPassword"
+              id="currentPassword"
+              value={formValues.currentPassword}
+              onChange={handleChange}
+              error={formErrors.currentPassword}
+            />
+          )}
           <TextInput
             fieldName="Status:"
             name="status"
@@ -183,15 +185,17 @@ const MySetting = () => {
             value={formValues.status}
             onChange={handleChange}
           />
-          {!profile?.source && <TextInput
-            type="password"
-            fieldName="New password:"
-            name="newPassword"
-            id="newPassword"
-            value={formValues.newPassword}
-            onChange={handleChange}
-            error={formErrors.newPassword}
-          />}
+          {!profile?.source && (
+            <TextInput
+              type="password"
+              fieldName="New password:"
+              name="newPassword"
+              id="newPassword"
+              value={formValues.newPassword}
+              onChange={handleChange}
+              error={formErrors.newPassword}
+            />
+          )}
           <TextInput
             fieldName="Email:"
             name="email"
@@ -200,15 +204,17 @@ const MySetting = () => {
             onChange={handleChange}
             error={formErrors.email}
           />
-          {!profile?.source && <TextInput
-            type="password"
-            fieldName="Confirm new password:"
-            name="confirmNewPassword"
-            id="confirmNewPassword"
-            value={formValues.confirmNewPassword}
-            onChange={handleChange}
-            error={formErrors.confirmNewPassword}
-          />}
+          {!profile?.source && (
+            <TextInput
+              type="password"
+              fieldName="Confirm new password:"
+              name="confirmNewPassword"
+              id="confirmNewPassword"
+              value={formValues.confirmNewPassword}
+              onChange={handleChange}
+              error={formErrors.confirmNewPassword}
+            />
+          )}
         </div>
         <div className={styles.submit}>
           <Button width="100px" type="submit" name="Save" loading={loading} />

@@ -56,7 +56,7 @@ const configFacebookAuth = (passport) => {
   passport.use(new FacebookStrategy({
     clientID: process.env.FACEBOOK_APP_ID,
     clientSecret: process.env.FACEBOOK_APP_SECRET,
-    callbackURL: "/auth/facebook/callback",
+    callbackURL: `${process.env.BASE_URL}/auth/facebook/callback`,
     state: true,
     profileFields: ['id', 'displayName', 'picture.type(large)', 'email']
   },
@@ -72,7 +72,6 @@ const configFacebookAuth = (passport) => {
       try {
         //find the user in our database
         let user = await User.findOne({ facebookId: profileObj.id });
-        console.log("user", user)
         if (user) {
           //If user present in our database.
           done(null, user);
