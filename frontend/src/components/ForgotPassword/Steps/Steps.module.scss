@@ -1,0 +1,72 @@
+@import '../../../assets/styles/mixin';
+@import '../../../assets/styles/variables';
+
+.steps {
+  background-color: $gray-1;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+  .center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    h2 {
+      // font-family: Lexend Deca;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 50px;
+      line-height: 80px;
+      text-align: center;
+      color: $primary-color;
+      margin-bottom: 15px;
+      margin-top: 0;
+    }
+    .desc {
+    //   width: 80%;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 16px;
+      line-height: 20px;
+      /* identical to box height */
+      text-align: center;
+      color: $primary-color;
+      margin-bottom: 20px;
+    }
+    .space {
+      height: 30px;
+    }
+    .message {
+      height: 20px;
+      text-align: center;
+      margin-bottom: 10px;
+      .successMsg {
+        color: $green;
+      }
+      .errorMsg {
+        color: $red;
+      }
+    }
+
+    .loginBtn {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+      button {
+        @include buttonLink;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+    }
+
+    .linkDesc {
+        margin-top: 20px;
+        text-align: center;
+        button {
+          @include buttonLink();
+        }
+      }
+  }
+}

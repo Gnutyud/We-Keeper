@@ -134,7 +134,7 @@ function Login() {
             {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
             <label htmlFor="remember">Remember me</label>
           </div>
-          <button type="button">Forgot password?</button>
+          <button type="button" onClick={() => navigate('/forgot-password')}>Forgot password?</button>
         </div>
         <Button type="submit" name="Login" loading={loading} />
         <div className={style.signUp}>
