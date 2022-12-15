@@ -1,7 +1,10 @@
 const User = require("../models/User");
 const Note = require("../models/Note");
+const Token = require("../models/Token");
 const asyncHandler = require("express-async-handler");
 const { hashPassword, matchPassword } = require("../helper/password");
+const crypto = require("crypto");
+const sendEmail = require("../helper/sendEmail");
 
 // @desc Get all users
 // @route Get /users
@@ -117,7 +120,7 @@ const updateUser = asyncHandler(async (req, res) => {
   }
 
   if (status) user.status = status;
-  if(avatar) user.avatar = avatar;
+  if (avatar) user.avatar = avatar;
 
   await user.save();
   res.status(200).json({ message: "updated user" });
@@ -165,4 +168,68 @@ const deleteUser = asyncHandler(async (req, res) => {
   res.status(200).json({ message: `Username ${result.username} with ID ${result._id} deleted!` });
 });
 
-module.exports = { getAllUsers, getUser, createNewUser, updateUser, deleteUser, updateUserRole };
+// @desc Request password reset
+// @route POST /users/forgot-password
+// @access Private
+const requestPasswordForgot = asyncHandler(async (req, res) => {
+  const { email } = req.body;
+  if (!email) {
+    return res.status(400).json({ message: "Email is required!" });
+  }
+  const foundUser = await User.findOne({ email }).exec();
+  if (!foundUser) {
+    return res.status(400).json({ message: "No user with that email adddress was found." });
+  }
+  let resetToken = await Token.findOne({ userId: foundUser._id });
+  if (!resetToken) {
+    resetToken = await new Token({
+      userId: foundUser._id,
+      token: crypto.randomBytes(32).toString("hex"),
+    }).save();
+  }
+
+  await sendEmail(foundUser, resetToken.token);
+
+  res.status(200).json({ message: "password reset link sent to your email account" });
+});
+
+// @desc Reset password
+// @route POST /users/reset-password
+// @access Private
+const resetPassword = asyncHandler(async (req, res) => {
+  const { password, token, userId } = req.body;
+  if (!password && !token && !userId) {
+    return res.status(400).json({ message: "All fields are required!" });
+  }
+  const foundUser = await User.findById(userId);
+  if (!foundUser) return res.status(400).json({ message: "Invalid link" });
+  const ResetToken = await Token.findOne({
+    userId: foundUser._id,
+    token: token,
+  });
+  if (!ResetToken) return res.status(400).json({ message: "Invalid link" });
+  let tokenDate = new Date(ResetToken.createdAt);
+  let currentDate = new Date();
+  let diffTime = (currentDate - tokenDate) / 1000; // to seconds
+  if (diffTime > 10 * 60) {
+    await ResetToken.delete();
+    return res.status(400).json({ message: "Your link is expired in 10 minutes" }); // expired in 10 minutes
+  };
+
+  foundUser.password = await hashPassword(password);
+  await foundUser.save();
+  await ResetToken.delete();
+
+  res.status(200).json({ message: "password changed sucessfully!" });
+});
+
+module.exports = {
+  getAllUsers,
+  getUser,
+  createNewUser,
+  updateUser,
+  deleteUser,
+  updateUserRole,
+  requestPasswordForgot,
+  resetPassword,
+};

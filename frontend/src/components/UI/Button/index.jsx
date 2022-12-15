@@ -3,9 +3,9 @@ import { ImSpinner11 } from 'react-icons/im';
 import styles from './Button.module.scss';
 
 export const Button = (props) => {
-  const { name, type, loading, width = '100%' } = props;
+  const { name, type, loading, width = '100%', ...others } = props;
   return (
-    <button type={type} className={styles.button} style={{ width }} disabled={loading}>
+    <button type={type} className={styles.button} style={{ width }} disabled={loading} {...others}>
       {loading && <ImSpinner11 className={styles.spinner} />}
       {name}
     </button>
