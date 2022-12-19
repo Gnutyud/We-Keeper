@@ -10,7 +10,7 @@ import style from './Login.module.scss';
 
 function Login() {
   // without lib like formik and yub
-  const initialValues = { username: '', password: '' };
+  const initialValues = { username: '', password: '', rememberMe: false };
   const initialErrors = { username: '', password: '', error: '', success: '' };
   const [formValues, setFormValues] = useState(initialValues);
   const [formErrors, setFormErrors] = useState(initialErrors);
@@ -130,11 +130,19 @@ function Login() {
         />
         <div className={style.forgot}>
           <div className={style.checkbox}>
-            <input type="checkbox" name="remember" id="remember" />
+            <input
+              type="checkbox"
+              name="rememberMe"
+              id="rememberMe"
+              value={formValues.rememberMe}
+              onChange={() => setFormValues((prev) => ({ ...prev, rememberMe: !prev.rememberMe }))}
+            />
             {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-            <label htmlFor="remember">Remember me</label>
+            <label htmlFor="rememberMe">Remember me</label>
           </div>
-          <button type="button" onClick={() => navigate('/forgot-password')}>Forgot password?</button>
+          <button type="button" onClick={() => navigate('/forgot-password')}>
+            Forgot password?
+          </button>
         </div>
         <Button type="submit" name="Login" loading={loading} />
         <div className={style.signUp}>

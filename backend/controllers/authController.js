@@ -7,7 +7,7 @@ const asyncHandler = require("express-async-handler");
 // @route POST /auth
 // @access Public
 const login = asyncHandler(async (req, res) => {
-  const { username, password } = req.body;
+  const { username, password, rememberMe } = req.body;
   if (!username) throw new Error("Username is required!");
   if (!password) throw new Error("Password is required!");
 
@@ -26,13 +26,22 @@ const login = asyncHandler(async (req, res) => {
   const accessToken = await createToken(foundUser);
   const refreshToken = await createRefreshToken(foundUser);
   // Create secure cookie with refresh token
-  res.cookie(process.env.REFRESH_TOKEN_COOKIE_NAME, refreshToken, {
+  const cookieSetting = {
     httpOnly: true, //accessible only by web server
     secure: true, //https
     sameSite: "None", //cross-site cookie
     path: "/auth",
-    maxAge: 7 * 24 * 60 * 60 * 1000, //cookie expiry: set to match rT
-  });
+  };
+
+  if (!rememberMe) {
+    // session cookie without set the Expires or Max-age attribute.
+    res.cookie(process.env.REFRESH_TOKEN_COOKIE_NAME, refreshToken, { ...cookieSetting, expires: false });
+  } else {
+    res.cookie(process.env.REFRESH_TOKEN_COOKIE_NAME, refreshToken, {
+      ...cookieSetting,
+      maxAge: 90 * 24 * 60 * 60 * 1000, //cookie expiry: 90 days
+    });
+  }
 
   let userInfo = {
     username: foundUser.username,
