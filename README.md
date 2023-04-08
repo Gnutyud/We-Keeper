@@ -25,3 +25,5 @@ To run We-Keeper on your local machine, follow these steps:
 ## Usage
 
 To use We-Keeper, navigate to https://wekeep.onrender.com in your web browser. From there, you can create an account, log in with Google or Facebook, and start creating notes.
+![image](https://user-images.githubusercontent.com/73052334/230716633-887b5bc6-cf4c-432c-90af-3de1b95eb2d7.png)
+![image](https://user-images.githubusercontent.com/73052334/230716916-0fcfccee-719d-4031-80f2-8fda416c63c2.png)
